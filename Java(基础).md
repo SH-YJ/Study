@@ -5020,4 +5020,3 @@ InsufficientFundsException
 - **JVM(Java虚拟机) 异常**：由 JVM 抛出的异常或错误。例如：**NullPointerException 类**，**ArrayIndexOutOfBoundsException 类**，**ClassCastException 类**。
 - **程序级异常：**由程序或者API程序抛出的异常。例如 **IllegalArgumentException 类**，**IllegalStateException 类**。
 
-​     
