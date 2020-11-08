@@ -497,11 +497,81 @@ public class HashTableDemo {
 
 ### 属性（Properties）
 
-Properties 继承于 Hashtable.Properties 类表示了一个持久的属性集.属性列表中每个键及其对应值都是一个字符串。
+**Properties 继承于 Hashtable.Properties 类**表示了一个**持久的属性集**.属性列表中**每个键及其对应值都是一个字符串**。
 
-Properties 类被许多Java类使用。例如，在获取环境变量时它就作为System.getProperties()方法的返回值。
+**Properties 类被许多Java类使用**。例如，**在获取环境变量时它就作为System.getProperties()方法的返回值**。
 
+Properties 定义如下实例变量.**这个变量持有一个Properties对象相关的默认属性列表**。
 
+```java
+properties default;
+```
+
+**Properties类定义了两个构造方法.**
+
+ 第一个构造方法**没有默认值**。
+
+```java
+Properties()
+```
+
+第二个构造方法**使用propDefault 作为默认值**。两种情况下，**属性列表都为空**：
+
+```java
+Properties(Properties propDefault)
+```
+
+除了**从Hashtable中所定义的方法**，**Properties定义了以下方法**：
+
+| 方法                                                       | **方法描述**                                                 |
+| :--------------------------------------------------------- | :----------------------------------------------------------- |
+| **String getProperty(String key)**                         | 用**指定的键**在**此属性列表中搜索属性**。                   |
+| **String getProperty(String key, String defaultProperty)** | 用**指定的键**在**属性列表中搜索属性**。                     |
+| **void list(PrintStream streamOut)**                       | 将**属性列表输出到指定的输出流**。                           |
+| **void list(PrintWriter streamOut)**                       | 将**属性列表输出到指定的输出流**。                           |
+| **void load(InputStream streamIn) throws IOException**     | 从**输入流中读取属性列表**（键和元素对）。                   |
+| **Enumeration propertyNames( )**                           | 按**简单的面向行的格式**从**输入字符流中读取属性列表**（键和元素对）。 |
+| **Object setProperty(String key, String value)**           | **调用 Hashtable 的方法 put**。                              |
+| **void store(OutputStream streamOut, String description)** | 以**适合使用 load(InputStream)方法加载到 Properties 表中的格式**，将此 **Properties 表中的属性列表（键和元素对）写入输出流**。 |
+
+**实例**
+
+```Java
+import java.util.*;
+ 
+public class PropDemo {
+   public static void main(String args[]) {
+      	Properties capitals = new Properties();
+        Set<Object> states;
+        String str;
+
+        capitals.put("Illinois","Springfiled");
+        capitals.put("Missouri","Jefferson City");
+        capitals.put("Washington","Olympia");
+        capitals.put("Claifornia","Sacramento");
+        capitals.put("Indiana","Indianapolis");
+
+        states = capitals.keySet();
+        for (Object state : states) {
+            str = (String) state;
+            System.out.println("The capital of " + str + " is " + capitals.getProperty(str) + ".");
+        }
+        System.out.println();
+
+        str = capitals.getProperty("Florida","Not Found");
+        System.out.println("The capital of Florida is " + str + ".");
+   }
+}
+/*输出:
+The capital of Missouri is Jefferson City.
+The capital of Illinois is Springfiled.
+The capital of Claifornia is Sacramento.
+The capital of Indiana is Indianapolis.
+The capital of Washington is Olympia.
+
+The capital of Florida is Not Found.
+*/
+```
 
 ## Java 集合框架
 
