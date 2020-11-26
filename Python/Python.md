@@ -5,23 +5,38 @@
 ### 入门
 
 ```python
-	input()  #输入 数据类型为str
-	print()  #输出 默认多输出换行 end=''输出在同一行
+	input()  #输入 默认数据类型为str  int(input())整型输入
+	print()  #输出 默认输出换行 end=''输出不换行
+    #格式化输出
+    print('%.2f, %d'%(12,34)   # 12.00, 34  类似于c语言的输出
+    print('abc {} xyz'.format('mn'))  # abc mn xyz
+    print('abc {0} xyz {1}'.format('mn','tg'))  # abc mn xyz tg
+    print('abc {name} xyz'.format(name='mn'))  # abc mn xyz
+    print('{:.2f}'.format(12))  # 12.00
+    print('{0:.2f}'.format(12))  # 12.00
+    print('{num:.2f}'.format(num=12))  # 12.00
+    
 	#r''表示''内部的字符串默认不转义
+    print(r'\n')  # \n
+    
 	#'''''' 表示多行注释
 	#单个#表示一行注释
+    
 	#布尔值 Ture False 开头大写
 	#逻辑运算符 and or not
     #成员运算符 in  not in
+    
     #del 删除
     #type() 查看数据类型
+    
 	# / 除法结果为浮点数
     # // 除法结果为整数
     # % 求余数
     # ** 幂运算
+    print(2**3)  # 8
 ```
 
-### Number 数字
+### Number (数字)
 
 ```python
 	#int(x)将x转换为一个整数
@@ -46,7 +61,7 @@
         factorial(x)  求阶乘
 ```
 
-### String 字符串
+### String (字符串)
 
 ```python
 	#字符串类型为str()
@@ -71,7 +86,7 @@
     	print('Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)) = Hello, 小明, 成绩提升了 17.1%
 ```
 
-### List 列表
+### List (列表)
 
 ```python
 	a= ['a','b','c']
@@ -104,7 +119,7 @@
      	#'ab'位置表示为s[3][0]
 ```
 
-### Tuple 元组
+### Tuple (元组)
 
 ```python
 	#初始化后不能修改
@@ -116,7 +131,7 @@
     	t=(1,)
 ```
 
-### Dict 字典
+### Dict (字典)
 
 ```python
 	#具有极快的查找速度
@@ -139,7 +154,7 @@
     #list可变，不可作为key
 ```
 
-### Set 集合
+### Set (集合)
 
 ```python
 	s=set([1,2,3])  #传入参数
@@ -250,8 +265,7 @@
         bool()
     #可以把函数名赋给一个变量
     	a=abs
-    	print(a(-1)) = 1
-        
+    	print(a(-1)) = 1  
 ```
 
 ### 定义函数
@@ -265,5 +279,4 @@ def my_abs(x):
 #空函数
 	def nop():
     	pass
-
 ```

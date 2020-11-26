@@ -1,209 +1,106 @@
-# Python of Sprider(网络爬虫)
+# Sprider(爬虫)
 
-## 爬取图片
+## urllib
 
-### 最简单下载图片
+## requests
+
+## selenium
+
+**selenium** 是一个**用于Web应用程序测试的工具**。Selenium测试直接运行在浏览器中，就像真正的用户在操作一样。支持的浏览器包括IE（7, 8, 9, 10, 11），Mozilla Firefox，Safari，Google Chrome，Opera等
+
+**selenium用于爬虫**，主要是用来解决**javascript渲染的问题**
+
+### selenium的基本使用
 
 ```python
-import urllib.request
+# -*- coding: utf-8 -*-
+from selenium import webdriver
 
-#图片下载
-
-img_url = url	#网址
-urllib.request.urlretrieve(img_url, 'S:/'+img_url.split('/')[-1])
+if __name__ = '__main__':
+    # 声明谷歌、Firefox、Safari等浏览器
+    # 若浏览器非默认安装路径，需加入路径
+    browser = webdriver.Chrome()  # 创建drive对象
+    # 若webdriver.exe不与python解释器不在同一路径下，需手动声明
+    # browser = webdriver.Chrome(executable_path=r'C:/chrome/chromedriver.exe')
+    
+    browser.get("http://www.baidu.com")  # 请求数据
+    data = browser.page_source  # 获取当前页面的响应数据（源代码）
+    print(type(data))  # data 的数据类型 <class 'str'>
+    # 获取网页源代码并储存到本地
+    with open('baidu.html','w',encoding='utf-8') as f:
+        f.write(data_)
+    
+    # 使界面最大化
+    browser.maximize_window()
+    # 截取当前页面
+	browser.save_screenshot('baidu.png')
+    
+    browser.close()  # 关闭浏览器当前页面
+    browser.quit()  # 关闭浏览器
 ```
 
-### 例1：taotuxp.com
+### 无头模式的设置
 
 ```python
-#一次可爬取12个套图
-# -- coding:UTF-8 --
-import requests
-from bs4 import BeautifulSoup
-import os
-import re
-'''
-思路：获取网址
-      获取图片地址
-      爬取图片并保存
-'''
-# 获取网址
-def getUrl(url):
-    try:
-        read = requests.get(url)  #获取url
-        read.raise_for_status()   #状态响应 返回200连接成功
-        read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
-        return read.text   #Http响应内容的字符串，即url对应的页面内容
-    except:
-        return "连接失败！"
-
-while True:
-    os.system('cls')
-    S_page =input("输入第几页:")
-    a_html_url = getUrl("https://www.taotuxp.com/xinggan/page/"+str(S_page))	#主界面网址
-    sum_url = re.findall('<a href="(.*?)" class=".*?" target=".*?">',a_html_url) #获取一网页12个网址
-    for s_url in sum_url :
-        html_urls = getUrl(s_url)
-        soups = BeautifulSoup(html_urls, "html.parser")
-        # 通过分析网页内容，查找img的统一父类及属性
-        pagelist = soups.find('div', class_='pagelist').find_all('a')   #获取当前网页总页数
-        sum_page = int(pagelist[-1].string)+1
-        for page in range(1,int(sum_page)):   #页数爬取
-            html_url = getUrl(s_url+ '/' +str(page))
-            dir_name = re.findall('<h1>(.*?)</h1>', html_url)[-1]   #获取标题名
-            soup = BeautifulSoup(html_url, "html.parser")
-            # 通过分析网页内容，查找img的统一父类及属性
-            all_img = soup.find('div', class_='context').find_all('img')  # img为图片的标签
-            for img in all_img:
-                src = img['src']  # 获取img标签里的src内容
-                img_url = src
-                print(img_url)
-                root = "S:/Pic/" + dir_name +'/'# 保存的路径
-                path = root + img_url.split('/')[-1] # 获取img的文件名
-                print(path)
-                try:
-                    if not os.path.exists(root):  # 判断是否存在文件并下载img
-                        os.mkdir(root)
-                    if not os.path.exists(path):
-                        read = requests.get(img_url)
-                        with open(path, "wb")as f:
-                            f.write(read.content)
-                            f.close()
-                            print("文件保存成功！")
-                    else:
-                        print("文件已存在！")
-                except:
-                    print("文件爬取失败！")
-```
-
-### 例2：woyaogexing.com
-
-```python
-import requests
-from bs4 import BeautifulSoup
-import urllib.request
-
-def getUrl(url):
-    try:
-        read = requests.get(url)  #获取url
-        read.raise_for_status()   #状态响应 返回200连接成功
-        read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
-        return read.text   #Http响应内容的字符串，即url对应的页面内容
-    except:
-        return "连接失败！"
-
-while True:
-    kind = input("类型:")
-    num = input("地址:")
-    html_url = getUrl('https://www.woyaogexing.com/touxiang/'+str(kind)+'/2020/' + str(num) + '.html')
-    soup = BeautifulSoup(html_url, "html.parser")
-    all_img = soup.find('ul', class_='artCont cl').find_all('img')
-    for img in all_img:
-        src = img['src']
-        img_url = 'https:' + src
-        urllib.request.urlretrieve(img_url, 'S:/' + img_url.split('/')[-1])
-```
-
-### 例3：obzhi.com
-
-```python
-# -- coding:UTF-8 --
-import requests
-from bs4 import BeautifulSoup
-import os
-import re
-'''
-思路：获取网址
-      获取图片地址
-      爬取图片并保存
-'''
-headers ={
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.116 Safari/537.36'
-}
-
-# 获取网址
-def getUrl(url):
-    try:
-        read = requests.get(url,headers=headers)  #获取url
-        read.raise_for_status()   #状态响应 返回200连接成功
-        read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
-        return read.text   #Http响应内容的字符串，即url对应的页面内容
-    except:
-        return "连接失败！"
+import time
+from selenium import webdriver
+# 设置"无头模式"
+from selenium.webdriver.chrome.options import Options
 
 if __name__ == '__main__':
-    for i in range(2,15):
-        html_url = getUrl('http://www.obzhi.com/category/fengjingbizhi/page/'+str(i))
-        soup = BeautifulSoup(html_url,"html.parser")
-        url = soup.find('ul',class_='masonry clearfix').find_all('a', class_='zoom')#获取所有图片所在网页
-        for u in url:
-            u_url = u['href']
-            html_url2 = getUrl(u_url)
-            soup2 = BeautifulSoup(html_url2, "html.parser")
-            img_url = soup2.find('img', class_='alignnone')#获取具体图片地址
-            img = img_url['src']
-            root = "S:/Pic/"   # 保存的路径
-            path = root + img.split('/')[-1]  # 获取img的文件名
-            print(path)
-            try:
-                if not os.path.exists(root):  # 判断是否存在文件并下载img
-                    os.mkdir(root)
-                if not os.path.exists(path):
-                    read = requests.get(img)
-                    with open(path, "wb")as f:
-                        f.write(read.content)
-                        f.close()
-                        print("文件保存成功！")
-                else:
-                    print("文件已存在！")
-            except:
-                print("文件爬取失败！")
+    # 实例化 创建一个新的的对象 option对象
+    option = Options()
+    # 添加参数设置'无头模式',
+    option.add_argument('--headless')
+    """
+    第二种:option_.set_headless()
+    第三种:option_.headless = True
+    """
+
+    driver_ = webdriver.Chrome(options=option)  # 1. 创建浏览器对象,打开对应浏览器
+    driver_.get('https://www.baidu.com/')  # 2.get向url输入框输入网址
+    data_ = driver_.page_source  # 3. 获取当前页面的响应数据（源代码）
+    print(type(data_))
+    time.sleep(1)
+    driver_.close() # 关闭浏览器页面
+    time.sleep(1)
+    driver_.quit()  # 关闭浏览器
 ```
 
-### 例4：pic.netbian.com
+### selenium元素定位的方法
+
+**定位元素的语法**
 
 ```python
-import requests
-from bs4 import BeautifulSoup
-import os
-import re
+find_element_by_id (返回一个元素)
+find_elements_by_xpath （返回一个包含元素的列表）
+find_elements_by_link_text （根据连接文本获取元素列表）
+find_elements_by_partial_link_text （根据链接包含的文本获取元素列表）
+find_elements_by_tag_name (根据标签名获取元素列表)
+find_elements_by_class_name （根据类名获取元素列表）
+```
 
-# 获取网址
-def getUrl(url):
-    try:
-        read = requests.get(url)  #获取url
-        read.raise_for_status()   #状态响应 返回200连接成功
-        read.encoding = read.apparent_encoding  #从内容中分析出响应内容编码方式
-        return read.text   #Http响应内容的字符串，即url对应的页面内容
-    except:
-        return "连接失败！"
+**find_element和find_elements的区别**：单个元素和所有元素。
 
-if __name__ == '__main__':
-    for i in range(2,200):
-        html_url = getUrl('http://pic.netbian.com/4kfengjing/index_'+ str(i) +'.html')
-        soup =BeautifulSoup(html_url,"html.parser")
-        img_urls = soup.find('ul',class_='clearfix').find_all('a')#获取图片所在网址
-        for img_url in img_urls:
-            img = "http://pic.netbian.com" + img_url['href']
-            html_url2 = getUrl(img)
-            soup2 = BeautifulSoup(html_url2,"html.parser")
-            i_img_url = soup2.find('div',class_='photo-pic').find('img')#获取图片具体地址
-            ii_img = 'http://pic.netbian.com' + str(i_img_url['src'])
-            root = "S:/4K/"  # 保存的路径
-            path = root + ii_img.split('/')[-1]  # 获取img的文件名
-            print(path)
-            try:
-                if not os.path.exists(root):  # 判断是否存在文件并下载img
-                    os.mkdir(root)
-                if not os.path.exists(path):
-                    read = requests.get(ii_img)
-                    with open(path, "wb")as f:
-                        f.write(read.content)
-                        f.close()
-                        print("文件保存成功！")
-                else:
-                    print("文件已存在！")
-            except:
-                print("文件爬取失败！")
+**by_link_text和by_partial_link_tex的区别**：全部文本和包含某个文本。
+
+```python
+# 查找单个元素与多个元素
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+browser = webdriver.Chorme()
+browser.get("http://www.baidu.com")
+
+# 单个元素的多种从查找方式
+l1 = browser.find_element_by_id("q")
+l2 = browser.find_element_by_css_selector("#q")
+l3 = browser.find_element(By.ID, "q")
+
+# 多个元素的多种查找方式
+l4 = browser.find_elements_by_css_selector("ul")
+l5 = browser.find_elements(By.CSS_SELECTOR, "ul")
+
+browser.close()
 ```
 
