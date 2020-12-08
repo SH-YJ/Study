@@ -321,4 +321,4 @@ max()和min()函数并不限于数值类型。如果是字符类型,max()和min(
 mysqladmin -u 用户名 -p password 新密码
 ```
 
-在 Java，Python 中双引号变单引号
+**在 Java，Python 中双引号变单引号**

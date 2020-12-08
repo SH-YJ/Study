@@ -2374,7 +2374,7 @@ myStr3 是否为空：false
 
 StringBuilder 类在 Java 5 中被提出，它和 StringBuffer 之间的最大不同在于 **StringBuilder** 的方法**不是线程安全**的（**不能同步访问**）。
 
-由于 **StringBuilder** 相较于 **StringBuffer** 有**速度优势**，所以多数情况下建议使用 StringBuilder 类。然而在应用程序要求**线程安全**的情况下，则**必须使用 StringBuffer 类**。
+由于 **StringBuilder** 相较于 **StringBuffer** 有**速度优势**，所以**多数情况下建议使用 StringBuilder 类**。然而在应用程序要求**线程安全**的情况下，则**必须使用 StringBuffer 类**。
 
 ### StringBuffer 方法
 

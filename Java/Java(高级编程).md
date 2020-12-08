@@ -575,10 +575,1432 @@ The capital of Florida is Not Found.
 
 ## Java 集合框架
 
+集合框架被设计成要满足以下几个目标。
 
+- 该框架必须是高性能的。基本集合（动态数组，链表，树，哈希表）的实现也必须是高效的。
+- 该框架允许不同类型的集合，以类似的方式工作，具有高度的互操作性。
+- 对一个集合的扩展和适应必须是简单的。
+
+![](https://www.runoob.com/wp-content/uploads/2014/01/2243690-9cd9c896e0d512ed.gif)
+
+**Java 集合框架**主要包括**两种类型的容器**，一种是**集合（Collection）**，**存储一个元素集合**，另一种是**图（Map）**，**存储键/值对映射**。
+
+**Collection 接口**又有 3 种子类型，**List**、**Set** 和 **Queue**，再下面是一些抽象类，最后是**具体实现类**，常用的有 **ArrayList**、**LinkedList**、**HashSet**、**LinkedHashSet**、**HashMap**、**LinkedHashMap** 等等。
+
+**集合框架**是一个用来**代表和操纵集合的统一架构**。所有的集合框架都包含如下内容：
+
+- **接口：**是代表集合的**抽象数据类型**。例如 **Collection、List、Set、Map** 等。之所以定义多个接口，是为了以不同的方式操作集合对象
+- **实现（类）：**是**集合接口的具体实现**。从本质上讲，它们是**可重复使用的数据结构**，例如：**ArrayList、LinkedList、HashSet、HashMap。**
+- **算法：**是**实现集合接口的对象**里的方法执行的一些有用的计算，例如：搜索和排序。这些算法被称为**多态**，那是因为相同的方法可以在相似的接口上有着不同的实现。
+
+![](https://www.runoob.com/wp-content/uploads/2014/01/java-coll-2020-11-16.png)
+
+### 集合接口
+
+| 接口            | 接口描述                                                     |
+| :-------------- | :----------------------------------------------------------- |
+| **Collection**  | **Collection** 是**最基本的集合接口**，**一个 Collection 代表一组 Object**，即 Collection 的元素, **Java不提供直接继承自Collection的类，只提供继承于的子接口(如List和set)**。Collection 接口**存储一组不唯一**，**无序**的对象。 |
+| **List**        | **List**接口是一个**有序的 Collection**，使用此接口能够**精确的控制每个元素插入的位置**，能够通过**索引**(元素在List中位置，类似于数组的下标)来**访问List中的元素**，**第一个元素的索引为 0**，而且**允许有相同的元素**。List 接口**存储一组不唯一**，**有序（插入顺序）**的对象。 |
+| **Set**         | **Set** 具有**与 Collection 完全一样的接口**，只是行为上不同，**Set 不保存重复的元素**。Set 接口**存储一组唯一**，**无序**的对象。 |
+| **SortedSet**   | **继承于Set保存有序**的集合。                                |
+| **Map**         | Map 接口**存储一组键值对象**，提供**key（键）到value（值）的映射**。 |
+| **Map.Entry**   | 描述在**一个Map中的一个元素**（键/值对）。是一个**Map的内部类**。 |
+| **SortedMap**   | **继承于 Map**，使 **Key 保持在升序排列**。                  |
+| **Enumeration** | 这是一个**传统的接口和定义的方法**，通过它可以枚举（一次获得一个）对象集合中的元素。这个传统接口**已被迭代器取代**。 |
+
+**Set和List的区别**
+
+- **Set** 接口实例存储的是**无序的，不重复的数据**。**List** 接口实例存储的是**有序的，可以重复的元素**。
+- **Set检索效率低下**，**删除和插入效率高**，**插入和删除不会引起元素位置改变** **<实现类有HashSet,TreeSet>**。
+- **List和数组类似**，可以**动态增长**，根据实际存储的数据的长度自动增长List的长度。**查找元素效率高，插入删除效率低**，因为会引起**其他元素位置改变** **（实现类有ArrayList,LinkedList,Vector）**
+
+### 集合实现类（集合类）
+
+| 序号                       | 类描述                                                       |
+| :------------------------- | :----------------------------------------------------------- |
+| **AbstractCollection**     | 实现了**大部分的集合接口**。                                 |
+| **AbstractList**           | **继承于AbstractCollection** 并且**实现了大部分List接口**。  |
+| **AbstractSequentialList** | **继承于 AbstractList**，提供了**对数据元素的链式访问**而不是随机访问。 |
+| **LinkedList**             | 该类**实现了List接口**，允许有**null（空）元素**。主要用于**创建链表数据结构**，该类**没有同步方法**，如果多个线程同时访问一个List，则必须自己实现访问同步，解决方法就是在创建List时候构造一个同步的List。例如：`List list=Collections.synchronizedList(newLinkedList(...));`**LinkedList 查找效率低**。 |
+| **ArrayList**              | 该类也是**实现了List的接口**，实现了**可变大小的数组**，随机访问和遍历元素时，提供更好的性能。该类也是**非同步**的,在多线程的情况下不要使用。ArrayList 增长当前长度的50%，**插入删除效率低**。 |
+| **AbstractSet**            | **继承于AbstractCollection** 并且**实现了大部分Set接口**。   |
+| **HashSet**                | 该类**实现了Set接口**，**不允许出现重复元素**，**不保证集合中元素的顺序**，允许**包含值为null的元素**，但**最多只能一个**。 |
+| **LinkedHashSet**          | 具有**可预知迭代顺序**的 `Set` 接口的哈希表和链接列表实现。  |
+| **TreeSet**                | 该类**实现了Set接口**，可以**实现排序等功能**。              |
+| **AbstractMap**            | 实现了**大部分的Map接口**。                                  |
+| **HashMap**                | **HashMap** 是一个**散列表**，它存储的内容是**键值对(key-value)映射**。 该类实现了Map接口，根据**键的HashCode值存储数据**，具有**很快的访问速度**，**最多允许一条记录的键为null**，**不支持线程同步**。 |
+| **TreeMap**                | **继承了AbstractMap**，并且**使用一颗树**。                  |
+| **WeakHashMap**            | **继承AbstractMap类**，使用**弱密钥的哈希表**。              |
+| **LinkedHashMap**          | **继承于HashMap**，使用**元素的自然顺序对元素进行排序**.     |
+| **IdentityHashMap**        | **继承AbstractMap类**，**比较文档时使用引用相等**。          |
+
+### 迭代器的使用
+
+迭代器，使你能够通过**循环来得到或删除集合的元素**。**ListIterator 继承了 Iterator**，以**允许双向遍历列表和修改元素**
+
+**遍历ArrayList**
+
+```Java
+package com.Study.Iterator;
+
+import java.util.*;
+
+/**
+ * @author SH_YJ
+ * @date 2020/12/6 15:52
+ */
+public class test1 {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("Hello");
+        list.add("World");
+        list.add("HAHAHAHA");
+
+        //第一种遍历方式使用 For-Each 遍历list
+        for (String str : list) {
+            System.out.println(str);
+        }
+
+        //第二种遍历，把链表变为数组相关的内容进行遍历
+        String[] strArray = new String[list.size()];
+        list.toArray(strArray);
+        for (String s : strArray) {
+            System.out.println(s);
+        }
+        
+        //第三种遍历 使用迭代器进行相关遍历
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
+}
+```
+
+**遍历Map**
+
+```Java
+package com.Study.Iterator;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+/**
+ * @author SH_YJ
+ * @date 2020/12/6 16:01
+ */
+public class Map_iterator {
+    public static void main(String[] args) {
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "value1");
+        map.put("2", "value2");
+        map.put("3", "value3");
+
+        // 第一种：普遍使用，二次取值
+        System.out.println("通过Map.keySet遍历key和value：");
+        for (String key : map.keySet()) {
+            System.out.println("key= " + key + " and value= " + map.get(key));
+        }
+
+        // 第二种
+        System.out.println("通过Map.entrySet使用iterator遍历key和value：");
+        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String,String> entry = iterator.next();
+            System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+        }
+
+        //第三种：推荐，容量大时
+        System.out.println("通过Map.entrySet遍历key和value");
+        for (Map.Entry<String,String> entry : map.entrySet()){
+            System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+        }
+
+        // 第四种
+        System.out.println("通过Map.value()遍历所有的value，但不能遍历key");
+        for (String v: map.values()) {
+            System.out.println("value= " + v);
+        }
+    }
+}
+```
+
+### 总结
+
+Java集合框架为程序员提供了预先包装的数据结构和算法来操纵他们。
+
+集合是一个对象，可容纳其他对象的引用。集合接口声明对每一种类型的集合可以执行的操作。
+
+**集合框架的类和接口均在java.util包中**。
+
+任何对象加入集合类后，**自动转变为Object类型**，所以在取出的时候，**需要进行强制类型转换**。
 
 ## Java ArrayList
 
+**ArrayList 类**是一个**可以动态修改的数组**，与普通数组的区别就是它是**没有固定大小的限制**，我们可以添加或删除元素。
 
+ArrayList 继承了 AbstractList ，并实现了 List 接口。
+
+**ArrayList 类**位于 **java.util** 包中，使用前需要引入它，语法格式如下：
+
+```Java
+import java.util.ArrayList;  // 引入 ArrayList 类
+ArrayList<E> objectName =  new ArrayList<>();  //初始化
+// E 泛型数据类型，用于设置objectName的数据类型，只能为引用数据类型，需要使用基本数据类型的包装类
+// objectName 对象名
+```
+
+### 添加元素
+
+```java 
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        System.out.println(sites);
+    }
+}
+// [Google, Runoob, Taobao, Weibo]
+```
+
+### 访问元素
+
+```java
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+        //索引从0开始
+        System.out.println(sites.get(1));  // 访问第二个元素
+    }
+}
+// Runoob
+```
+
+### 修改元素
+
+```Java
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Weibo");
+    	sites.set(2,"Wiki");  // 第一个参数为索引位置，第二个位置为要修改的值
+        System.out.println(sites);
+    }
+}
+// [Google, Runoob, Wiki, Weibo]
+```
+
+### 删除元素
+
+```Java
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+		sites.add("Weibo");
+    	sites.remove(2);  // 删除第三个元素
+        System.out.println(sites);
+    }
+}
+// [Google, Runoob, Weibo]
+```
+
+### 计算大小
+
+```Java
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+		sites.add("Weibo");
+ 		System.out.println(sites.size());
+    }
+}
+// 4
+```
+
+### 迭代数组列表
+
+```Java
+import java.util.ArrayList;
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+		sites.add("Weibo");
+ 		// 使用for-each
+        for (String str: sites) {
+            System.out.println(str);
+        }
+    }
+}
+/*
+Google
+Runoob
+Taobao
+Weibo
+*/
+```
+
+### ArrayList 排序
+
+**字母排序**
+
+```Java
+import java.util.ArrayList;
+import java.util.Collections;  // 引入 Collections 类
+
+public interface ArrayList_Test1 {
+    public static void main(String[] args) {
+ 		 ArrayList<String> sites = new ArrayList<String>();
+        sites.add("Taobao");
+        sites.add("Wiki");
+        sites.add("Runoob");
+        sites.add("Weibo");
+        sites.add("Google");
+        Collections.sort(sites);  // 字母排序
+        for (String i : sites) {
+            System.out.println(i);
+        }
+    }
+}
+/*
+Google
+Runoob
+Taobao
+Weibo
+Wiki
+*/
+```
+
+**数字排序**
+
+```Java
+import java.util.ArrayList;
+import java.util.Collections;  // 引入 Collections 类
+
+public class ArrayList_Test1 {
+    public static void main(String[] args) {
+        ArrayList<Integer> myNumbers = new ArrayList<Integer>();
+        myNumbers.add(33);
+        myNumbers.add(15);
+        myNumbers.add(20);
+        myNumbers.add(34);
+        myNumbers.add(8);
+        myNumbers.add(12);
+
+        Collections.sort(myNumbers);  // 数字排序
+
+        for (int i : myNumbers) {
+            System.out.println(i);
+        }
+    }
+}
+/*
+8
+12
+15
+20
+33
+34
+*/
+```
+
+### ArrayList方法
+
+#### add()
+
+将元素**插入到指定位置**的 arraylist 中
+
+**语法**
+
+```java
+arraylist.add(int index, E element)
+// index 表示元素插入处的索引值
+// element 要插入的元素
+// 若index超出范围，则抛出异常IndexOutOfBoundsException
+```
+
+**实例**
+
+```Java
+import javv.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        ArrayList<Integer> Numbers = new ArrayList<>();
+        // 在数据末尾插入元素
+        Numbers.add(2);
+        Numbers.add(3);
+        Numbers.add(5);
+        // 指定位置插入
+        Numbers.add(1,4);  
+        System.out.println(Numbers);
+    }
+}
+// [2, 4, 3, 5]
+```
+
+#### addAll()
+
+**添加集合中的所有元素**到 arraylist 中
+
+**语法**
+
+```Java
+arraylist.addAll(int index, Collection c)
+//index 表示集合元素，未指定则插入数组末尾
+//c 要插入的集合元素
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<Integer> primeNumbers = new ArrayList<>();
+        primeNumbers.add(3);
+        primeNumbers.add(5);
+		
+        // 创建另一个动态数组
+        ArrayList<Integer> numbers = new ArrayList<>();
+        numbers.add(1);
+        numbers.add(2);
+        // 插入primeNumbers集合元素到末尾
+        numbers.addAll(primeNumbers);
+        System.out.println("Numbers: " + numbers);
+        // 指定位置插入
+        numbers.addAll(1, primeNumbers)
+        System.out.println("Numbers: " + numbers);
+    }
+}
+/*
+Numbers: [1, 2, 3, 5]
+Numbers: [1, 3, 5, 2]
+*/
+```
+
+#### clear()
+
+**删除** arraylist 中的**所有元素**
+
+**语法**
+
+```java
+arraylist.clear()
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 删除所有元素
+        sites.clear();
+        System.out.println("所有 clear() 方法后: " + sites);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+所有 clear() 方法后: []
+*/
+//clear()和remove()功能一样，但clear()速度更快，更高效
+```
+
+#### clone()
+
+ **复制**一份 arraylist
+
+**语法**
+
+```java
+arraylist.clone()
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 对 sites 进行拷贝
+        ArrayList<String> cloneSites = (ArrayList<String>)sites.clone();
+        System.out.println("拷贝 ArrayList: " + cloneSites);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+拷贝 ArrayList: [Google, Runoob, Taobao]
+*/
+```
+
+#### contains()
+
+判断**元素是否在 arraylist**
+
+**语法**
+
+```Java
+arraylist.contains(Object obj)
+// obj 要检测的元素
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        // 检查 Runoob 是否在这个数组中
+        System.out.print("Runoob 是否存在于 arraylist: ");
+        System.out.println(sites.contains("Runoob"));
+
+        // 检查 Weibo 是否在这个数组中
+        System.out.print("Weibo 是否存在于 arraylist: ");
+        System.out.println(sites.contains("Weibo"));
+    }
+}
+/*
+Runoob 是否存在于 arraylist: true
+Weibo 是否存在于 arraylist: false
+*/
+```
+
+#### get()
+
+通过**索引值**获取 **arraylist 中的元素**
+**语法**
+
+```java
+arraylist.get(int index)
+//index 索引值
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 获取在索引值为1处的元素
+        String element = sites.get(1);
+        System.out.println("索引值为 1 的元素为: " + element);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+索引值为 1 的元素为: Runoob
+*/
+```
+
+#### indexOf()
+
+返回 arraylist 中**元素的索引值**
+
+**语法**
+
+```java
+arraylist.get(Object obj)
+// obj 查找的元素
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        // 查找位置索引值为 Runoob 的元素
+        int position1 = sites.indexOf("Runoob");
+        System.out.println("Runoob 的索引位置: " + position1);
+
+        // 查找位置索引值为 Weibo 的元素
+        int position2 = sites.indexOf("Weibo");
+        System.out.println("Weibo 的索引位置: " + position2);
+    }
+}
+/*
+Runoob 的索引位置: 1
+Weibo 的索引位置: -1
+*/
+//元素不存在数组中则返回-1
+```
+
+#### removeAll()
+
+**删除**存在于**指定集合**中的 arraylist 里的**所有元素**
+
+**语法**
+
+```Java
+arraylist.removeAll(Collection c)
+// c 动态数组列表中要删除的元素集合
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+            sites.add("Google");
+            sites.add("Runoob");
+            sites.add("Taobao");
+            System.out.println("网站列表: " + sites);
+
+        // 删除所有元素
+        sites.removeAll(sites);
+        System.out.println("所有 removeAll() 方法后: " + sites);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+所有 removeAll() 方法后: []
+*/
+```
+
+#### remove()
+
+**删除** arraylist 里的**单个元素**
+
+**语法**
+
+```Java
+// 删除指定元素
+arraylist.remove(Object obj)
+// obj 要删除的元素，若obj元素出现两次，则删除动态数组第一次出现的元素
+
+// 删除指定索引位置的元素
+arraylist.remove(int index)
+// index 要删除元素索引值
+```
+
+**实例**
+
+```java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+
+        // 删除元素 Taobao
+        boolean result = sites.remove("Taobao");
+        System.out.println("Taoabo 是否被删除? " + result);
+        System.out.println("使用 remove() 后: " + sites);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+Taoabo 是否被删除? true
+使用 remove() 后: [Google, Runoob]
+*/
+```
+
+#### size()
+
+返回 arraylist 里**元素数量**
+
+**语法**
+
+```Java
+arraylist.size()
+```
+
+实例
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+
+        // 得到数组中的元素个数
+        int size = sites.size();
+        System.out.println("动态数组长度: " + size);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao]
+动态数组长度: 3
+*/
+```
+
+#### isEmpty()
+
+判断 arraylist **是否为空**
+
+**语法**
+
+```Java
+arraylist.isEmpty()
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        // 检查数组中是否含有元素
+        boolean result = sites.isEmpty(); // true
+        System.out.println("sites 是否为空? " + result);
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 检查该数组是否为空
+        result = sites.isEmpty();  // false
+        System.out.println("sites 是否为空? " + result);
+    }
+}
+/*
+sites 是否为空? true
+网站列表: [Google, Runoob, Taobao]
+sites 是否为空? false
+*/
+```
+
+#### subList()
+
+**截取部分** arraylist 的**元素**
+
+**语法**
+
+```Java
+arraylist.subList(int fromIndex, int toIndex)
+// fromIndex 截取元素的起始位置，包含该索引位置元素
+// toIndex 截取元素的结束位置，不包含该索引位置元素
+```
+
+**实例**
+
+```java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Wiki");
+        System.out.println("网站列表: " + sites);
+
+        // 元素位置为1到3
+        System.out.println("SubList: " + sites.subList(1, 3));
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao, Wiki]
+SubList: [Runoob, Taobao]
+*/
+```
+
+#### set()
+
+**替换** arraylist 中**指定索引的元素**
+
+**语法**
+
+```Java
+arraylist.set(int index, E element)
+// index 索引位置
+// element 将在index位置替换进去的新元素
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        // 索引 2 的元素被替换
+        String element = sites.set(2, "Wiki");
+        System.out.println("替换后: " + sites);
+        System.out.println("被替换的元素: " + element);
+    }
+}
+/*
+替换后: [Google, Runoob, Wiki]
+被替换的元素: Taobao
+*/
+```
+
+**set()与add()方法区别：**
+
+- set() 方法在**指定位置**对元素进行**更新**。
+- add() 方法将元素**插入**到**指定位置**的动态数组中。
+
+#### sort()
+
+对 arraylist 元素进行**排序**
+
+**语法**
+
+```Java
+arraylist.sort(Comparator c)
+// comparator 顺序方式
+```
+
+**实例**
+
+```java
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Runoob");
+        sites.add("Google");
+        sites.add("Wiki");
+        sites.add("Taobao");
+        System.out.println("不排序: " + sites);
+
+        //升序排列
+        sites.sort(Comparator.naturalOrder());
+        System.out.println("升序排序: " + sites);
+        
+        // 降序排序
+        sites.sort(Comparator.reverseOrder());
+        System.out.println("降序排序: " + sites);
+    }
+}
+/*
+不排序: [Runoob, Google, Wiki, Taobao]
+升序排序: [Google, Runoob, Taobao, Wiki]
+降序排序: [Wiki, Taobao, Runoob, Google]
+*/
+```
+
+#### toArray()
+
+将 arraylist **转换为数组**
+
+**语法**
+
+```Java
+arraylist.toArray(T[] arr)
+// T [] arr 用于存储数组元素的数组 
+// T 指的是数组的类型
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	// 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Runoob");
+        sites.add("Google");
+        sites.add("Wiki");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 创建一个新的 String 类型的数组
+        // 数组长度和 ArrayList 长度一样
+        String[] arr = new String[sites.size()];
+        // 将ArrayList对象转换成数组
+        sites.toArray(arr);
+        
+        // 使用无参数的方法
+        Object[] obj = sites.toArray();
+        
+        // 两种输出方式结果都一样
+
+        // 第一种方式输出
+        System.out.print("Array1: ");
+        for(String item:arr) {
+            System.out.print(item+", ");
+        
+        // 第二种方式输出    
+        System.out.print("Array2: ");
+        for(Object item : obj) {
+            System.out.print(item+", ");
+        }
+    }
+}
+/*
+网站列表: [Runoob, Google, Wiki, Taobao]
+Array1: Runoob, Google, Wiki, Taobao, 
+Array2: Runoob, Google, Wiki, Taobao, 
+*/
+```
+
+#### toString()
+
+将 arraylist **转换为字符串**
+
+**语法**
+
+```Java
+arraylist.toString()
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Runoob");
+        sites.add("Google");
+        sites.add("Wiki");
+        sites.add("Taobao");
+        System.out.println("网站列表: " + sites);
+
+        // 将ArrayList转换为String类型
+        String list = sites.toString();
+        System.out.println("String: " + list);
+    }
+}
+/*
+网站列表: [Runoob, Google, Wiki, Taobao]
+String: [Runoob, Google, Wiki, Taobao]
+*/
+```
+
+#### ensureCapacity()
+
+设置**指定容量大小**的 arraylist
+
+**语法**
+
+```Java
+arraylist.ensureCapacity(int minCapacity)
+// minCapacity 动态数组的容量
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        // 设置 arraylist的容量大小
+        sites.ensureCapacity(3);
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        
+        // 添加第四个元素
+        sites.add("Wiki");
+        
+        // 添加 3 个以上的元素，它将自动调整自身大小
+        
+        System.out.println("网站列表: " + sites);
+    }
+}
+// 网站列表: [Google, Runoob, Taobao, Wiki]
+```
+
+#### lastIndexOf()
+
+返回**指定元素**在 arraylist 中**最后一次出现的位置**
+
+**语法**
+
+```Java
+arraylist.lastIndexOf(Object obj)
+// obj 查找的元素
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+    	 // 创建一个数组
+        ArrayList<String> sites = new ArrayList<>();
+
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Runoob");
+        System.out.println("网站列表: " + sites);
+
+
+        // 获取 Runoob 最后一次出现的位置
+        int position1 = sites.lastIndexOf("Runoob");
+        System.out.println("Runoob 最后出现的位置: " + position1);
+
+        // Wiki 不在 arraylist 中返回 -1
+        int position2 = sites.lastIndexOf("Wiki");
+        System.out.println("Wiki 最后出现的位置: " + position2);
+    }
+}
+/*
+网站列表: [Google, Runoob, Taobao, Runoob]
+Runoob 最后出现的位置: 3
+Wiki 最后出现的位置: -1
+*/
+```
+
+#### retainAll()
+
+**保留** arraylist 中在**指定集合中也存在的那些元素**
+
+**语法**
+
+```Java
+arraylist.retainAll(Collection c)
+// collection 集合参数    
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        System.out.println("ArrayList 1: " + sites);
+
+        // 创建另一个动态数组
+        ArrayList<String> sites2 = new ArrayList<>();
+
+        // 往动态数组中添加元素
+        sites2.add("Wiki");
+        sites2.add("Runoob");
+        sites2.add("Google");
+        System.out.println("ArrayList 2: " + sites2);
+
+        // 保留两个共有的元素
+        sites.retainAll(sites2);
+        System.out.println("保留的元素: " + sites);
+    }
+}
+/*
+ArrayList 1: [Google, Runoob, Taobao]
+ArrayList 2: [Wiki, Runoob, Google]
+保留的元素: [Google, Runoob]
+*/
+```
+
+#### containsAll()
+
+查看 arraylist 是否**包含指定集合中的所有元素**
+
+**语法**
+
+```java 
+arraylist.containsAll(Collection c)
+// collection 集合参数
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        System.out.println("ArrayList 1: " + sites);
+
+        // 创建另一个动态数组
+        ArrayList<String> sites2 = new ArrayList<>();
+
+        // 往动态数组中添加元素
+        sites2.add("Runoob");
+        sites2.add("Google");
+        System.out.println("ArrayList 2: " + sites2);
+
+        // 检查动态数组1是否包含动态数组2
+        boolean result1 = sites.containsAll(sites2);
+        System.out.println("ArrayList 1 包含了 ArrayList 2 的所有元素: " + result1);
+
+        // 检查数组2是否包含数组1
+        boolean result2 = sites2.containsAll(sites);
+        System.out.println("ArrayList 2 包含了 ArrayList 1 的所有元素: " + result2);
+    }
+}
+/*
+ArrayList 1: [Google, Runoob, Taobao]
+ArrayList 2: [Runoob, Google]
+ArrayList 1 包含了 ArrayList 2 的所有元素: true
+ArrayList 2 包含了 ArrayList 1 的所有元素: false
+*/
+```
+
+#### trimToSize()
+
+ 将 arraylist 中的**容量调整为数组中的元素个数**
+
+**语法**
+
+```Java
+arraylist.trimToSize()
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        ArrayList<String> sites = new ArrayList<>();
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        System.out.println("ArrayList : " + sites);
+
+        // 调整容量为3
+        sites.trimToSize();
+        System.out.println("ArrayList 大小: " + sites.size());
+    }
+}
+/*
+ArrayList : [Google, Runoob, Taobao]
+ArrayList 大小: 3
+*/
+//trimToSize()的优点：删除未分配的空间并更改 ArrayList 的容量，使其等于 ArrayList 中的元素个数
+```
+
+#### removeRange()
+
+**删除** arraylist 中**指定索引之间存在的元素**
+
+**语法**
+
+```Java
+arraylist.removeRange(int fromIndex, int toIndex)
+// fromIndex 索引起始位置，包含该索引位置的值
+// toIndex 索引结束位置，不包含该索引位置的值
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        // 创建一个动态数组
+        Main sites = new Main();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Wiki");
+        sites.add("Weibo");
+
+        System.out.println("ArrayList : " + sites);
+
+        // 删除从索引值1到3的元素
+        sites.removeRange(1, 3);
+        System.out.println("删除后的 ArrayList: " + sites);
+    }
+}
+/*
+ArrayList : [Google, Runoob, Taobao, Wiki, Weibo]
+删除后的 ArrayList: [Google, Wiki, Weibo]
+*/
+```
+
+#### replaceAll()
+
+将**给定的操作内容替换掉数组中每一个元素**
+
+**语法**
+
+```Java
+arraylist.replaceAll(UnaryOperator<E> operator)
+// operator 要替换到动态数组的元素或者一系列操作
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        ArrayList<Integer> numbers = new ArrayList<>();
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        System.out.println("ArrayList1: " + sites);
+
+        // 将所有元素更改为大写
+        sites.replaceAll(e -> e.toUpperCase());
+        System.out.println("更新后的 ArrayList: " + sites);
+
+        // 往数组中添加元素
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        System.out.println("ArrayList2: " + numbers);
+        // 所有元素乘以 2
+        numbers.replaceAll(e -> e * 2);;
+        System.out.println("更新后的 ArrayList: " + numbers);
+    }
+}
+/*
+ArrayList1: [Google, Runoob, Taobao]
+更新后的 ArrayList: [GOOGLE, RUNOOB, TAOBAO]
+ArrayList2: [1, 2, 3]
+更新后的 ArrayList: [2, 4, 6]
+*/
+```
+
+#### removeIf()
+
+**删除所有满足特定条件**的 arraylist 元素
+
+**语法**
+
+```Java
+arraylist.removeIf(Predicate<E> filter)
+// filter 过滤器，判断元素是否删除
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+        ArrayList<String> sites = new ArrayList<>();
+        ArrayList<Integer> numbers = new ArrayList<>();
+       
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+
+        System.out.println("ArrayList1: " + sites);
+
+        // 删除名称中带有 Tao 的元素
+        sites.removeIf(e -> e.contains("Tao"));;
+        System.out.println("删除后的 ArrayList: " + sites);
+
+        // 往数组中插入元素
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        numbers.add(4);
+        numbers.add(5);
+        numbers.add(6);
+        System.out.println("Numbers: " + numbers);
+
+        // 删除所有偶数元素
+        numbers.removeIf(e -> (e % 2) == 0);  //括号内为lambda格式 
+        System.out.println("Odd Numbers: " + numbers);
+    }
+}
+/*
+ArrayList1: [Google, Runoob, Taobao]
+删除后的 ArrayList: [Google, Runoob]
+Numbers: [1, 2, 3, 4, 5, 6]
+Odd Numbers: [1, 3, 5]
+*/
+```
+
+#### forEach()
+
+ **遍历** arraylist 中每一个元素并执行特定操作
+
+**语法**
+
+```Java
+arraylist.forEach(Consumer<E> action)
+// action 对每个元素执行的操作
+// forEach() 不同于 for-each
+```
+
+**实例**
+
+```Java
+import java.util.ArrayList;
+
+public class ArrayList_Test2 {
+    public static void main(String[] args) {
+         // 创建一个数组
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        // 往数组中添加元素
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        numbers.add(4);
+        System.out.println("ArrayList: " + numbers);
+
+        // 所有元素乘以 10
+        System.out.print("更新 ArrayList: ");
+       
+        // 将 lambda 表达式传递给 forEach
+        numbers.forEach((e) -> {e = e * 10; System.out.print(e + " ");});
+    }
+}
+```
 
 ## Java LinkedList
+
+
+
+## Java HashSet
+
+
+
+## Java HashMap
+
+
+
+## Java Iterator
+
+
+
+## Java Object
+
+
+
+## Java 泛型
