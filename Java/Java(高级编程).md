@@ -2021,7 +2021,7 @@ LinkedList<E> list = new LinkedList<>();   // 普通创建方法
 
 LinkedList<E> list = new LinkedList(Collection<? extends E> c); // 使用集合创建链表
 
-// E 泛型数据类型，用于设置数据类型，只能为引用数据类型，需要使用基本数据类型的包装类
+// E 泛型数据类型，用于设置objectName的数据类型，只能为引用数据类型，需要使用基本数据类型的包装类
 ```
 
 ### 添加元素
