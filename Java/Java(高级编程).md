@@ -857,7 +857,7 @@ public interface ArrayList_Test1 {
         sites.add("Taobao");
 		sites.add("Weibo");
  		// 使用for-each
-        for (String str: sites) {
+        for (String str : sites) {
             System.out.println(str);
         }
     }
@@ -1985,11 +1985,283 @@ public class ArrayList_Test2 {
 
 ## Java LinkedList
 
+**链表（Linked list）**是一种常见的基础数据结构，是一种**线性表**，但是并不会按线性的顺序存储数据，而是在**每一个节点里存到下一个节点的地址**。
 
+与 ArrayList 相比，**LinkedList 的增加和删除对操作效率更高**，而**查找和修改的操作效率较低**。
+
+**以下情况使用 ArrayList :**
+
+- 频繁访问列表中的某一个元素。
+- 只需要在列表末尾进行添加和删除元素操作。
+
+**以下情况使用 LinkedList :**
+
+- 你需要通过循环迭代来访问列表中的某些元素。
+- 需要频繁的在列表开头、中间、末尾等位置进行添加和删除元素操作。
+
+LinkedList 继承了 **AbstractSequentialList** 类。
+
+LinkedList 实现了 **Queue** 接口，可作为**队列**使用。
+
+LinkedList 实现了 **List** 接口，可进行**列表**的相关操作。
+
+LinkedList 实现了 **Deque** 接口，可作为**队列**使用。
+
+LinkedList 实现了 **Cloneable** 接口，可实现**克隆**。
+
+LinkedList 实现了 **java.io.Serializable** 接口，即**可支持序列化**，能通过序列化去传输。
+
+LinkedList 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+
+```Java
+// 引入 LinkedList 类
+import java.util.LinkedList; 
+
+LinkedList<E> list = new LinkedList<>();   // 普通创建方法
+
+LinkedList<E> list = new LinkedList(Collection<? extends E> c); // 使用集合创建链表
+
+// E 泛型数据类型，用于设置数据类型，只能为引用数据类型，需要使用基本数据类型的包装类
+```
+
+### 添加元素
+
+```Java
+import java.util.LinkedList;
+
+public class Test1 {
+    public static void main(String[] args) {
+        // 创建链表
+        LinkedList<String> list = new LinkedList<>();
+        // 添加元素
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add(1,"aa");  // 向指定位置插入元素
+        list.addFirst("First");  // 添加元素到首部
+        list.addLast("Last");  // 添加元素到尾部
+        System.out.println(list);
+    }
+}
+// [First, a, b, c, Last]
+```
+
+### 删除元素
+
+```Java
+import java.util.LinkedList;
+
+public class Test1 {
+    public static void main(String[] args) {
+        // 创建链表
+        LinkedList<String> list = new LinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.remove("b");  // 移除元素为b的元素
+        list.remove(1);  // 移除index为1的元素
+        list.removeFirst();  // 移除首元素
+        list.removeLast();  // 移除末尾元素
+        System.out.println(list);
+    }
+}
+```
+
+### 访问元素
+
+```java
+import java.util.LinkedList;
+
+public class Test1 {
+    public static void main(String[] args) {
+        // 创建链表
+        LinkedList<String> list = new LinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.get(1); // 访问index为1的元素 b
+        list.getFirst();  // 访问首元素 a
+        list.getLast();  //  访问末尾元素 c
+        System.out.println(list);
+    }
+}
+```
+
+### 迭代元素
+
+```Java
+import java.util.LinkedList;
+
+public class Test1 {
+    public static void main(String[] args) {
+        // 创建链表
+        LinkedList<String> list = new LinkedList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        for (String str : list){  // 也可用for循环，利用size()方法获得链表长度
+        	System.out.println(str);
+        }
+        
+    }
+}
+/*
+a
+b
+c
+*/
+```
+
+### 常用方法
+
+| 方法                                               | 描述                                                         |
+| :------------------------------------------------- | :----------------------------------------------------------- |
+| **public boolean add(E e)**                        | 链表**末尾添加元素**，返回是否成功，成功为 true，失败为 false。 |
+| **public void add(int index, E element)**          | 向**指定位置插入元素**。                                     |
+| **public boolean addAll(Collection c)**            | 将**一个集合的所有元素**添加到**链表后面**，返回是否成功，成功为 true，失败为 false。 |
+| **public boolean addAll(int index, Collection c)** | 将**一个集合的所有元素**添加到**链表的指定位置后面**，返回是否成功，成功为 true，失败为 false。 |
+| **public void addFirst(E e)**                      | **元素添加到头部**。                                         |
+| **public void addLast(E e)**                       | **元素添加到尾部**。                                         |
+| **public boolean offer(E e)**                      | 向**链表末尾添加元素**，返回是否成功，成功为 true，失败为 false。 |
+| **public boolean offerFirst(E e)**                 | **头部插入元素**，返回是否成功，成功为 true，失败为 false。  |
+| **public boolean offerLast(E e)**                  | **尾部插入元素**，返回是否成功，成功为 true，失败为 false。  |
+| **public void clear()**                            | **清空链表**。                                               |
+| **public E removeFirst()**                         | **删除**并**返回第一个元素**。                               |
+| **public E removeLast()**                          | **删除**并**返回最后一个元素**。                             |
+| **public boolean remove(Object o)**                | **删除某一元素**，返回是否成功，成功为 true，失败为 false。  |
+| **public E remove(int index)**                     | **删除指定位置的元素**。                                     |
+| **public E poll()**                                | **删除**并**返回第一个元素**。                               |
+| **public E remove()**                              | **删除**并**返回第一个元素**。                               |
+| **public boolean contains(Object o)**              | 判断**是否含有某一元素**。                                   |
+| **public E get(int index)**                        | 返回**指定位置的元素**。                                     |
+| **public E getFirst()**                            | 返回**第一个元素**。                                         |
+| **public E getLast()**                             | 返回**最后一个元素**。                                       |
+| **public int indexOf(Object o)**                   | 查找**指定元素**从**前往后第一次出现的索引**。               |
+| **public int lastIndexOf(Object o)**               | 查找**指定元素最后一次出现的索引**。                         |
+| **public E peek()**                                | 返回**第一个元素**。                                         |
+| **public E element()**                             | 返回**第一个元素**。                                         |
+| **public E peekFirst()**                           | 返回**头部元素**。                                           |
+| **public E peekLast()**                            | 返回**尾部元素**。                                           |
+| **public E set(int index, E element)**             | 设置**指定位置的元素**。                                     |
+| **public Object clone()**                          | **克隆**该列表。                                             |
+| **public Iterator descendingIterator()**           | 返回**倒序迭代器**。                                         |
+| **public int size()**                              | 返回**链表元素个数**。                                       |
+| **public ListIterator listIterator(int index)**    | 返回从**指定位置开始到末尾的迭代器**。                       |
+| **public Object[] toArray()**                      | 返回一个由**链表元素组成的数组**。                           |
+| **public T[] toArray(T[] a)**                      | 返回一个**由链表元素转换类型而成的数组**。                   |
 
 ## Java HashSet
 
+HashSet **基于 HashMap 来实现的**，是一个**不允许有重复元素的集合**。
 
+HashSet **允许有 null 值**。
+
+HashSet 是**无序**的，即**不会记录插入的顺序**。
+
+HashSet **不是线程安全**的， 如果多个线程尝试同时修改 HashSet，则最终结果是不确定的。 您必须在多线程访问时显式同步对 HashSet 的并发访问。
+
+HashSet **实现了 Set 接口**。
+
+HashSet 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+
+```Java
+import java.util.HashSet; // 引入 HashSet 类
+
+HashSet<String> sites = new HashSet<>();
+```
+
+### 添加元素
+
+```Java
+import java.util.HashSet;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("a");
+        set.add("b");
+        set.add("c");
+        System.out.println(set);
+    }
+}
+//[a, b, c]
+```
+
+### 判断元素是否存在
+
+```java 
+import java.util.HashSet;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("a");
+        set.add("b");
+        set.add("c");
+        System.out.println(set.contains("a"));
+    }
+}
+// true
+```
+
+### 删除元素
+
+```Java
+import java.util.HashSet;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("a");
+        set.add("b");
+        set.add("c");
+        set.remove("c");
+        set.clear();  // 清空所有元素
+        System.out.println(set);
+    }
+}
+// [a, b]
+```
+
+### 计算大小
+
+```Java
+import java.util.HashSet;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("a");
+        set.add("b");
+        set.add("c");
+        System.out.println(set.size());
+    }
+}
+// 3
+```
+
+### 迭代元素
+
+```Java
+import java.util.HashSet;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("a");
+        set.add("b");
+        set.add("c");
+        for (String str : set){
+        	System.out.println(str);
+        }
+    }
+}
+/*
+a
+b
+c
+*/                               
+```
 
 ## Java HashMap
 
