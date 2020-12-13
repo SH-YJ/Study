@@ -2265,6 +2265,533 @@ c
 
 ## Java HashMap
 
+HashMap 是一个**散列表**，它存储的内容是**键值对(key-value)映射**。
+
+HashMap **实现了 Map 接口**，根据**键的 HashCode 值存储数据**，具有**很快的访问速度**，**最多允许一条记录的键为 null**，**不支持线程同步**。
+
+HashMap 是**无序**的，即**不会记录插入的顺序**。
+
+HashMap 继承于AbstractMap，**实现了 Map、Cloneable、java.io.Serializable 接口**。
+
+HashMap 的 **key 与 value 类型可以相同也可以不同**
+
+HashMap 类位于 java.util 包中，使用前需要引入它，语法格式如下：
+
+```Java
+import java.util.HashMap; // 引入 HashMap 类
+
+HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+```
+
+### 添加元素
+
+```Java
+import java.util.HashMap;
+
+public class Test1 {
+    public static void main(String[] args) {
+        HashMap<String, String> Sites = new HashMap<Integer, String>();
+        Sites.put("one", "Google");
+        Sites.put("two", "Runoob");
+        Sites.put("three", "Taobao");
+        Sites.put("four", "Zhihu");
+        System.out.println(Sites);
+    }
+}
+// {four=Zhihu, one=Google, two=Runoob, three=Taobao}
+```
+
+### 访问元素
+
+```java
+import java.util.HashMap;
+
+public class Test2 {
+    public static void main(String[] args) {
+        HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+        // 添加键值对
+        Sites.put(1, "Google");
+        Sites.put(2, "Runoob");
+        Sites.put(3, "Taobao");
+        Sites.put(4, "Zhihu");
+        System.out.println(Sites.get(3));
+    }
+}
+// Taobao
+```
+
+### 删除元素
+
+```java
+import java.util.HashMap;
+
+public class Test3 {
+    public static void main(String[] args) {
+        HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+        // 添加键值对
+        Sites.put(1, "Google");
+        Sites.put(2, "Runoob");
+        Sites.put(3, "Taobao");
+        Sites.put(4, "Zhihu");
+        Sites.remove(4);
+        // Sites.claer()  清除所有键值对
+        System.out.println(Sites);
+    }
+}
+// {1=Google, 2=Runoob, 3=Taobao}
+```
+
+### 计算大小
+
+```Java
+import java.util.HashMap;
+
+public class Test4 {
+    public static void main(String[] args) {
+        HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+        // 添加键值对
+        Sites.put(1, "Google");
+        Sites.put(2, "Runoob");
+        Sites.put(3, "Taobao");
+        Sites.put(4, "Zhihu");
+        System.out.println(Sites.size());
+    }
+}
+// 4
+```
+
+### 迭代元素
+
+```Java
+import java.util.HashMap;
+
+public class Test4 {
+    public static void main(String[] args) {
+        HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+        // 添加键值对
+        Sites.put(1, "Google");
+        Sites.put(2, "Runoob");
+        Sites.put(3, "Taobao");
+        Sites.put(4, "Zhihu");
+        // 输出 key 和 value
+        for (Integer i : Sites.keySet()) {
+            System.out.println("key: " + i + " value: " + Sites.get(i));
+        }
+        // 返回所有 value 值
+        for(String value: Sites.values()) {
+          System.out.print(value + ", ");
+        }
+    }
+}
+/*
+key: 1 value: Google
+key: 2 value: Runoob
+key: 3 value: Taobao
+key: 4 value: Zhihu
+Google, Runoob, Taobao, Zhihu,
+*/
+```
+
+### HashMap方法
+
+#### clear()
+
+**删除** hashMap 中的**所有键/值对**
+
+**语法**
+
+```Java
+hashmap.clear()
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+
+        HashMap<Integer, String> sites = new HashMap<>();
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+
+        // 从HashMap中删除所有映射
+        sites.clear();
+        System.out.println("使用 clear() 方法后: " + sites);
+    }
+}
+/*
+HashMap: {1=Google, 2=Runoob, 3=Taobao}
+使用 clear() 方法后: {}
+*/
+// clear()可对HasMap重新初始化
+```
+
+#### clone()
+
+**复制**一份 hashMap，属于**浅拷贝**。
+
+**拓展：**
+
+​	**浅拷贝**只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存， 所以**如果其中一个对象改变了这个地址，就会影响到另一个对象**。。
+
+​	**浅拷贝**对应的就是深拷贝，深拷贝是将一个对象从内存中完整的拷贝一份出来,从堆内存中开辟一个新的区域存放新对象,且**修改新对象不会影响原对象**。
+
+**语法**
+
+```java
+hashmap.clone()
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+class Main {
+    public static void main(String[] args) {
+
+        HashMap<Integer, String> sites = new HashMap<>();
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+
+        // 复制 sites
+        HashMap<Integer, String> cloneSites = (HashMap<Integer, String>)sites.clone();
+        System.out.println("Cloned HashMap: " + cloneSites);
+    }
+}
+/*
+HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Cloned HashMap: {1=Google, 2=Runoob, 3=Taobao}
+*/
+```
+
+#### isEmpty()
+
+判断 hashMap **是否为空**
+
+**语法**
+
+```java
+hashmap.imEmpty()
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+
+        HashMap<Integer, String> sites = new HashMap<>();
+        // 检查该 HashMap 是否含有元素
+        boolean result = sites.isEmpty(); // true
+        System.out.println("是否为空? " + result);
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+
+        result = sites.isEmpty(); // false
+        System.out.println("是否为空? " + result);
+    }
+}
+```
+
+#### size()
+
+计算 hashMap 中**键/值对的数量**
+
+**语法**
+
+```Java
+hashmap.size()
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+
+        // 获得该 HashMap 中键/值对映射的数量
+        int size = sites.size();
+        System.out.println("Size of HashMap: " + size);
+    }
+}
+/*
+HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Size of HashMap: 3
+*/
+```
+
+#### put()
+
+将**键/值对添加**到 hashMap 中
+
+**语法**
+
+```Java
+hashmap.put(K key，V value)
+// key : 键
+// value : 值
+// 如果插入的 key 对应的 value 已经存在，则执行 value 替换操作，返回旧的 value 值，如果不存在则执行插入，返回 null。
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 HashMap
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+        // 添加重复的key元素
+        String value = sites.put(1, "Weibo");
+        System.out.println("修改后的 HashMap: " + sites);
+
+        // 查看所代替的值
+        System.out.println("替换的值: " + value);
+    }
+}
+/*
+HashMap: {1=Google, 2=Runoob, 3=Taobao}
+修改后的 HashMap: {1=Weibo, 2=Runoob, 3=Taobao}
+替换的值: Google
+*/
+```
+
+#### putAll()
+
+将**所有键/值对添加**到 hashMap 中
+
+**语法**
+
+```Java
+hashmap.putAll(Map m)
+//m : 包含插入到 HashMap 的映射关系
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+        // 创建另一个 HashMap
+        HashMap<Integer, String> sites2 = new HashMap<>();
+        sites2.put(1, "Weibo");  // 已存在会被替换
+        sites2.put(4, "Wiki");
+
+        // 将所有的映射关系从 sites 添加到 sites2
+        sites2.putAll(sites);
+        System.out.println("sites2 HashMap: " + sites2);
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+sites2 HashMap: {1=Google, 2=Runoob, 3=Taobao, 4=Wiki}
+*/
+```
+
+#### putIfAbsent()
+
+如果 hashMap 中**不存在指定的键**，则将**指定的键/值对插入**到 hashMap 中。
+
+**语法**
+
+``` java
+hashmap.putIfAbsent(K key, V value)
+// key : 键
+// value : 值
+// 如果所指定的 key 已经在 HashMap 中存在，返回和这个 key 值对应的 value, 如果所指定的 key 不在 HashMap 中存在，则返回 null。
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+       
+        // HashMap 不存在该key
+        sites.putIfAbsent(4, "Weibo");
+
+        // HashMap 中存在 Key
+        sites.putIfAbsent(2, "Wiki");
+        System.out.println("Updated sites HashMap: " + sites);
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Updated sites HashMap: {1=Google, 2=Runoob, 3=Taobao, 4=Weibo}
+*/
+```
+
+#### remove()
+
+**删除** hashMap 中**指定键 key 的映射关系**
+
+**语法**
+
+```Java
+hashmap.remove(Object key, Object value);
+// key : 值
+// value（可选）: 键值对(key-value)中 key 对应的 value 值
+// 如果指定 key，返回指定键 key 关联的值，如果指定的 key 映射值为 null 或者该 key 并不存在于该 HashMap 中，此方法将返回null。
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+class Main {
+    public static void main(String[] args) {
+
+        HashMap<Integer, String> sites = new HashMap<>();
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("HashMap: " + sites);
+
+        // 删除key为2的映射关系
+        String siteName = sites.remove(2);  // return Runoob
+        Boolean flag1 = sites.remove(1, "Google");  // return true
+        Boolean flag2 = sites.remove(2, "Weibo");  // return false
+        System.out.println("返回值: " + siteName);
+        System.out.println("删除后的 HashMap: " + sites);
+    }
+}
+/*
+HashMap: {1=Google, 2=Runoob, 3=Taobao}
+返回值: Runoob
+删除后的 HashMap: {1=Google, 3=Taobao}
+*/
+```
+
+#### containsKey()
+
+检查 hashMap 中**是否存在指定的 key 对应的映射关系**。
+
+
+
+#### containsValue()
+
+检查 hashMap 中**是否存在指定的 value 对应的映射关系**。
+
+
+
+#### replace()
+
+**替换** hashMap 中是**指定的 key 对应的 value**。
+
+
+
+#### replaceAll()
+
+将 hashMap 中的**所有映射关系替换**成**给定的函数所执行的结果**。
+
+
+
+#### get()
+
+**获取指定 key 对应对 value**
+
+
+
+#### getOrDefault()
+
+**获取指定 key 对应对 value**，如果**找不到 key** ，则返回**设置的默认值**
+
+
+
+#### forEach()
+
+对 hashMap 中的**每个映射执行指定的操作**。
+
+
+
+#### entrySet()
+
+返回 hashMap 中**所有映射项的集合集合视图**。
+
+
+
+#### keySet()
+
+返回 hashMap 中**所有 key 组成的集合视图**。
+
+
+
+#### values()
+
+返回 hashMap 中**存在的所有 value 值**。
+
+
+
+#### merge()
+
+**添加键值对**到 hashMap 中
+
+
+
+#### compute()
+
+对 hashMap 中**指定 key 的值进行重新计算**
+
+
+
+#### computeIfAbsent()
+
+对 hashMap 中**指定 key 的值进行重新计算**，如果**不存在这个 key**，则**添加到 hasMap 中**
+
+
+
+#### computeIfPresent()
+
+对 hashMap 中**指定 key 的值进行重新计算**，**前提是该 key 存在于 hashMap 中**。
+
 
 
 ## Java Iterator
