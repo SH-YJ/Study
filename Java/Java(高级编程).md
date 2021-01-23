@@ -2686,9 +2686,8 @@ hashmap.remove(Object key, Object value);
 ```Java
 import java.util.HashMap;
 
-class Main {
+public class Main {
     public static void main(String[] args) {
-
         HashMap<Integer, String> sites = new HashMap<>();
         sites.put(1, "Google");
         sites.put(2, "Runoob");
@@ -2714,89 +2713,710 @@ HashMap: {1=Google, 2=Runoob, 3=Taobao}
 
 检查 hashMap 中**是否存在指定的 key 对应的映射关系**。
 
+**语法**
 
+```java
+hashmap.containsKey(Object key)
+// key : 键
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+publlic class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        //检查 key 为 1 是否存在
+        if(sites.containsKey(1)) {
+            System.out.println("key 为 1 存在于 sites 中");
+        }
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+key 为 1 存在于 sites 中
+*/
+```
 
 #### containsValue()
 
 检查 hashMap 中**是否存在指定的 value 对应的映射关系**。
 
+**语法**
 
+```java
+hashmap.containsValue(Object value)
+// value : 值
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        //检查映射中值value是否有Runo0b
+        if(sites.containsValue("Runoob")) {
+            System.out.println("Runoob 存在于 sites 中");
+        }
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Updated sites HashMap: {1=Google, 2=Runoob, 3=Taobao, 4=Wiki}
+*/
+```
 
 #### replace()
 
 **替换** hashMap 中是**指定的 key 对应的 value**。
 
+**语法**
 
+```java
+hashmap.replace(K key, V oldValue, V newValue)
+// key : 键
+// oldValue : 旧的value值
+// newValue : 新的value值
+// 替换成功返回true,否则返回false
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+        
+        // 替换key为2的映射
+        String value = sites.replace(2, "Wiki");
+        System.out.println("Replaced Value: " + value);
+        System.out.println("Updated HashMap: " + sites);
+
+        // 替换映射关系{1 = Google}，执行替换
+        sites.replace(1, "Google", "Wiki");  // 返回 true
+        // 不存在映射关系{2 = Weibo}，没有任何操作
+        sites.replace(2, "Weibo", "Zhihu");  // 返回 false
+        System.out.println("sites after replace():\n" + sites);
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Replaced Value: Runoob
+Updated HashMap: {1=Google, 2=Wiki, 3=Taobao}
+sites after replace():
+{1=Wiki, 2=Wiki, 3=Taobao}
+*/
+```
 
 #### replaceAll()
 
 将 hashMap 中的**所有映射关系替换**成**给定的函数所执行的结果**。
 
+**语法**
 
+```java
+hashmap.replaceAll(Bifunction<K, V> function)
+// 执行对函数
+// 无返回值，仅替换
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // 将所有的值更改为大写
+        sites.replaceAll((key, value) -> value.toUpperCase());  //使用lambda表达式
+        System.out.println("Updated HashMap: " + sites);
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Updated HashMap: {1=GOOGLE, 2=RUNOOB, 3=TAOBAO}
+*/
+```
 
 #### get()
 
 **获取指定 key 对应对 value**
 
+**语法**
 
+```java
+hashmap.get(Object key)
+// key : 键
+// 返回key所关联的value
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main{
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // 得到 value
+        String value = sites.get(1);
+        System.out.println("key 1 对应的 value: " + value);
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+key 1 对应的 value: Google
+*/
+```
 
 #### getOrDefault()
 
 **获取指定 key 对应对 value**，如果**找不到 key** ，则返回**设置的默认值**
 
+**语法**
 
+```java
+hashmap.get(Object key, V defaultValue)
+// key : 键
+// defaultValue : 当指定的key并不存在映射关系中，则返回的该默认值
+```
+
+**实例**
+
+```Java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // key 的映射存在于 HashMap 中
+        // Not Found - 如果 HashMap 中没有该 key，则返回默认值
+        String value1 = sites.getOrDefault(1, "Not Found");
+        System.out.println("Value for key 1:  " + value1);
+
+        // key 的映射不存在于 HashMap 中
+        // Not Found - 如果 HashMap 中没有该 key，则返回默认值
+        String value2 = sites.getOrDefault(4, "Not Found");
+        System.out.println("Value for key 4: " + value2);
+    }
+}
+/*
+Value for key 1:  Google
+Value for key 4: Not Found
+*/
+```
 
 #### forEach()
 
 对 hashMap 中的**每个映射执行指定的操作**。
 
+**语法**
 
+```java
+hashmap.forEach(BiConsumer<K, V> action)
+// action : 要执行的操作
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 HashMap
+        HashMap<String, Integer> prices = new HashMap<>();
+
+        // 往 HashMap 中插入映射项
+        prices.put("Shoes", 200);
+        prices.put("Bag", 300);
+        prices.put("Pant", 150);
+        System.out.println("Normal Price: " + prices);
+
+        System.out.print("Discounted Price: ");
+
+        //通过 lambda 表达式使用 forEach()
+        prices.forEach((key, value) -> {
+            // value 价格减少百分之 10
+            value = value - value * 10/100;
+            System.out.print(key + "=" + value + " ");
+        });
+    }
+}
+/*
+Normal Price: {Pant=150, Bag=300, Shoes=200}
+Discounted Price: Pant=135 Bag=270 Shoes=180
+*/
+```
 
 #### entrySet()
 
 返回 hashMap 中**所有映射项的集合集合视图**。
 
+**语法**
 
+```java
+hashmap.entrySet()
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // 返回映射关系中 set view
+        System.out.println("Set View: " + sites.entrySet());
+        
+        //entrySet与 for-each 循环一起使用，用来遍历迭代 HashMap 中每一个映射项
+        HashMap<String, Integer> numbers = new HashMap<>();
+        numbers.put("One", 1);
+        numbers.put("Two", 2);
+        numbers.put("Three", 3);
+        System.out.println("numbers HashMap: " + numbers);
+
+        // 访问 HashMap 中的每一个映射项
+        System.out.print("Entries: ");
+
+        // entrySet()返回了 HashMap 中所有映射项的一个 set 集合视图
+        // for-each loop 在该视图中访问了每一映射项
+        for(Entry<String, Integer> entry: numbers.entrySet()) {
+            System.out.print(entry);
+            System.out.print(", ");
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Set View: [1=Google, 2=Runoob, 3=Taobao]
+numbers HashMap: {One=1, Two=2, Three=3}
+Entries: One=1, Two=2, Three=3, 
+*/
+```
 
 #### keySet()
 
 返回 hashMap 中**所有 key 组成的集合视图**。
 
+**语法**
 
+```java
+hashmap.keySet()
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // 返回所有 key 组成的 set 集合视图
+        System.out.println("Keys: " + sites.keySet());
+        
+        // keySet与 for-each 循环一起使用，用来遍历迭代 HashMap 中的所有键。
+
+        // keySet() 返回所有 key 组成的 set 视图
+        // for-each loop 在该视图中访问每一个 key
+        for(int key: sites.keySet()) {
+            System.out.print(key + ", ");
+        }
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Keys: [1, 2, 3]
+1, 2, 3, 
+*/
+```
 
 #### values()
 
 返回 hashMap 中**存在的所有 value 值**。
 
+**语法**
 
+```java
+hashmap.values()
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 HashMap
+        HashMap<Integer, String> sites = new HashMap<>();
+
+        // 往 HashMap 添加一些元素
+        sites.put(1, "Google");
+        sites.put(2, "Runoob");
+        sites.put(3, "Taobao");
+        System.out.println("sites HashMap: " + sites);
+
+        // 返回所有value值组成的视图
+        System.out.println("Values: " + sites.values());
+        
+        // values()与for-each循环一起使用，用来遍历迭代HashMap中的所有值
+        
+        // values() 返回所有 value 的一个视图
+        // for-each 循环可以 从view中访问每一个value值
+        for(String value: sites.values()) {
+            System.out.print(value + ", ");
+        }
+    }
+}
+/*
+sites HashMap: {1=Google, 2=Runoob, 3=Taobao}
+Values: [Google, Runoob, Taobao]
+values: Google, Runoob, Taobao, 
+*/
+```
 
 #### merge()
 
 **添加键值对**到 hashMap 中
 
+**语法**
 
+```java
+hashmap.merge(key, value, remappingFunction)
+// key : 键
+// value : 值
+// remappingFunction : 重新映射函数，用于重新计算值
+// 如果 key 对应的 value 不存在，则返回该 value 值，如果存在，则返回通过 remappingFunction 重新计算后的值
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+class Main {
+    public static void main(String[] args) {
+    HashMap<String, Integer> prices = new HashMap<>();
+
+    // 往 HashMap 插入映射
+    prices.put("Shoes", 200);
+    prices.put("Bag", 300);
+    prices.put("Pant", 150);
+    System.out.println("HashMap: " + prices);
+
+    int returnedValue = prices.merge("Shirt", 100, (oldValue, newValue) -> oldValue + newValue);  // lambda表达式
+    System.out.println("Price of Shirt: " + returnedValue);
+
+    // 输出更新后的 HashMap
+    System.out.println("Updated HashMap: " + prices);
+    }
+}
+/*键值都是字符串也是如此方法
+HashMap: {Pant=150, Bag=300, Shoes=200}
+Price of Shirt: 100
+Updated HashMap: {Pant=150, Shirt=100, Bag=300, Shoes=200}
+*/
+```
 
 #### compute()
 
 对 hashMap 中**指定 key 的值进行重新计算**
 
+**语法**
 
+```java
+hashmap.compute(K key, BiFunction remappingFunction)
+// key - 键
+// remappingFunction - 重新映射函数，用于重新计算值
+// 如果 key 对应的 value 不存在，则返回该 null，如果存在，则返回通过 remappingFunction 重新计算后的值
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+class Main {
+    public static void main(String[] args) {
+        HashMap<String, Integer> prices = new HashMap<>();
+
+        // 往HashMap中添加映射项
+        prices.put("Shoes", 200);
+        prices.put("Bag", 300);
+        prices.put("Pant", 150);
+        System.out.println("HashMap: " + prices);
+
+        // 重新计算鞋子打了10%折扣后的值
+        int newPrice = prices.compute("Shoes", (key, value) -> value - value * 10/100);
+        System.out.println("Discounted Price of Shoes: " + newPrice);
+
+        // 输出更新后的HashMap
+        System.out.println("Updated HashMap: " + prices);
+    }
+}
+/*
+HashMap: {Pant=150, Bag=300, Shoes=200}
+Discounted Price of Shoes: 180
+Updated HashMap: {Pant=150, Bag=300, Shoes=180
+*/
+```
 
 #### computeIfAbsent()
 
 对 hashMap 中**指定 key 的值进行重新计算**，如果**不存在这个 key**，则**添加到 hasMap 中**
 
+**语法**
 
+```java
+hashmap.computeIfAbsent(K key, Function remappingFunction)
+// key - 键
+// remappingFunction - 重新映射函数，用于重新计算值
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 HashMap
+        HashMap<String, Integer> prices = new HashMap<>();
+
+        // 往HashMap中添加映射项
+        prices.put("Shoes", 200);
+        prices.put("Bag", 300);
+        prices.put("Pant", 150);
+        System.out.println("HashMap: " + prices);
+
+        // key不存在,计算Shit的值
+        int shirtPrice = prices.computeIfAbsent("Shirt", key -> 280);
+        System.out.println("Price of Shirt: " + shirtPrice);
+
+        // 输出更新后的HashMap
+        System.out.println("Updated HashMap: " + prices);
+        
+        // key不存在的时候
+        
+        // Shoes中的映射关系已经存在
+        // Shoes并没有计算新值
+        int shoePrice = prices.computeIfAbsent("Shoes", (key) -> 280);
+        System.out.println("Price of Shoes: " + shoePrice);
+    }
+}
+/*
+HashMap: {Pant=150, Bag=300, Shoes=200}
+Price of Shirt: 280
+Updated HashMap: {Pant=150, Shirt=280, Bag=300, Shoes=200}
+Price of Shoes: 180
+*/
+```
 
 #### computeIfPresent()
 
 对 hashMap 中**指定 key 的值进行重新计算**，**前提是该 key 存在于 hashMap 中**。
 
+**语法**
 
+```java
+hashmap.computeIfPresent(K key, BiFunction remappingFunction)
+// key - 键
+// remappingFunction - 重新映射函数，用于重新计算值
+```
+
+**实例**
+
+```java
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个 HashMap
+        HashMap<String, Integer> prices = new HashMap<>();
+
+        // 往HashMap中添加映射关系
+        prices.put("Shoes", 200);
+        prices.put("Bag", 300);
+        prices.put("Pant", 150);
+        System.out.println("HashMap: " + prices);
+
+        // 重新计算鞋加上10%的增值税后的价值
+        int shoesPrice = prices.computeIfPresent("Shoes", (key, value) -> value + value * 10/100);
+        System.out.println("Price of Shoes after VAT: " + shoesPrice);
+
+        // 输出更新后的HashMap
+        System.out.println("Updated HashMap: " + prices);
+    }
+}
+/*
+HashMap: {Pant=150, Bag=300, Shoes=200}
+Price of Shoes after VAT: 220
+Updated HashMap: {Pant=150, Bag=300, Shoes=220}}
+*/
+```
 
 ## Java Iterator
 
+**Iterator（迭代器）不是一个集合**，它是一种用于**访问集合的方法**，可用于**迭代 ArrayList 和 HashSet 等集合**。
 
+迭代器 it 的两个基本操作是 next 、hasNext 和 remove。
+
+- 调用 **it.next()** 会返回**迭代器的下一个元素**，并且**更新迭代器的状态**。
+
+- 调用 **it.hasNext()** 用于**检测集合中是否还有元素**。
+
+- 调用 **it.remove()** 将迭代器**返回的元素删除**。
+
+### 获取迭代器
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+
+        // 创建集合
+        ArrayList<String> sites = new ArrayList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+
+        // 获取迭代器
+        Iterator<String> it = sites.iterator();
+
+        // 输出集合中的第一个元素
+        System.out.println(it.next());  // Google
+    }
+}
+```
+
+### 循环集合元素
+
+**输出所有元素**
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+
+        // 创建集合
+        ArrayList<String> sites = new ArrayList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+
+        // 获取迭代器
+        Iterator<String> it = sites.iterator();
+
+        // 输出集合中的所有元素
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+}
+/*
+Google
+Runoob
+Taobao
+Zhihu
+*/
+```
+
+**删除元素**
+
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+        numbers.add(12);
+        numbers.add(8);
+        numbers.add(2);
+        numbers.add(23);
+        Iterator<Integer> it = numbers.iterator();
+        while(it.hasNext()) {
+            Integer i = it.next();
+            if(i < 10) {  
+                it.remove();  // 删除小于 10 的元素
+            }
+        }
+        System.out.println(numbers);
+    }
+}
+// [12, 23]
+```
 
 ## Java Object
 

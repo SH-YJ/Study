@@ -2016,7 +2016,7 @@ public class Test {
 
 根据匹配给定的**正则表达式**来**拆分字符串**。
 
-**注意：** **.** 、 **$**、 **|** 和 ***** 等转义字符，必须得加 \\\\。
+**注意：** **.** 、 **$**、 **|** 和 ***** 等转义字符，必须得加 \\。
 
 **注意：**多个分隔符，可以用 **|** 作为连字符。
 
@@ -4140,21 +4140,21 @@ runoob5
 import java.io.*;
  
 public class Test{
-   public static void main(String args[])throws IOException{
- 
-      DataInputStream in = new DataInputStream(new FileInputStream("test.txt"));
-      DataOutputStream out = new DataOutputStream(new  FileOutputStream("test1.txt"));
-      BufferedReader d  = new BufferedReader(new InputStreamReader(in));
+   	public static void main(String args[])throws IOException{
+ 		// BufferedInputStream与DataInputStream读写方法类似
+      	DataInputStream in = new DataInputStream(new FileInputStream("test.txt"));
+      	DataOutputStream out = new DataOutputStream(new  FileOutputStream("test1.txt"));
+      	BufferedReader d  = new BufferedReader(new InputStreamReader(in));
      
-      String count;
-      while((count = d.readLine()) != null){
-          String u = count.toUpperCase();
-          System.out.println(u);
-          out.writeBytes(u + "  ,");
-      }
-      d.close();
-      out.close();
-   }
+      	String count;
+      	while((count = d.readLine()) != null){
+          	String u = count.toUpperCase();
+          	System.out.println(u);
+          	out.writeBytes(u + "  ,");
+      	}
+      	d.close();
+      	out.close();
+   	}
 }
 /*输出:
 RUNOOB1
@@ -4192,7 +4192,7 @@ File(String parent, String child)
 4.通过将**给定的 file: URI 转换成一个抽象路径名**来创建一个新的 File 实例。
 
 ```java
-File(URI uri) 
+File(URI uri)
 ```
 
 创建File对象成功后，可以使用以下列表中的方法操作文件。
@@ -4240,6 +4240,14 @@ public class DirList {
     public static void main(String args[]) {
         String dirname = "/java";
         File f1 = new File(dirname);
+        FilenameFilter filter = new FilenameFilter() {  // 文件过滤器
+            @Override
+            public boolean accept(File dir, String name) {
+                File currentfile = new File(dir, name);
+                return currentfile.isFile() && name.endsWith(".txt");
+            }
+        };
+        // 显示所有文件
         if (f1.isDirectory()) {
             System.out.println("Directory of " + dirname);
             String s[] = f1.list();
@@ -4254,6 +4262,13 @@ public class DirList {
         } else {
             System.out.println(dirname + " is not a directory");
         }
+        // 显示txt结尾的文件
+        if (f1.exists()){
+            String[] str = f1.list(fillter)
+            for (String s : str){
+                System.out.println(s)  // 仅输出txt文件
+            }
+        }
     }
 }
 /*输出:
@@ -4265,6 +4280,8 @@ test.txt is a file
 README is a file
 index.html is a file
 include is a directory
+
+tset.txt
 */
 ```
 
