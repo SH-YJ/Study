@@ -95,13 +95,10 @@ Python 支持三种不同的数值类型：
 - **浮点型(float)** - 浮点型由整数部分与小数部分组成，浮点型也可以使用科学计数法表示（2.5e2 = 2.5 x 102 = 250）
 - **复数( (complex))** - 复数由实数部分和虚数部分构成，可以用a + bj,或者complex(a,b)表示， 复数的实部a和虚部b都是浮点型。
 
-**int(x)**将x转换为一个整数
-
-**float(x)**将x转换到一个浮点数
-
-**complex(x)**将x转换到一个复数，实数部分为 x，虚数部分为 0
-
-**complex(x,y)**将 x 和 y 转换到一个复数，实数部分为 x，虚数部分为 y。x 和 y 是数字表达式
+1. **int(x)**将x转换为一个整数
+2. **float(x)**将x转换到一个浮点数
+3. **complex(x)**将x转换到一个复数，实数部分为 x，虚数部分为 0
+4. **complex(x,y)**将 x 和 y 转换到一个复数，实数部分为 x，虚数部分为 y。x 和 y 是数字表达式
 
 ### 数学函数（math库）
 
@@ -329,21 +326,26 @@ splitlines([keepends])  # 按照行('\r', '\r\n', \n')分隔，返回一个包�
     	a[-1] = c 
         a[-2] = b 
         a[-3] = a
-    #append()追加元素到末尾
-    	a.append('d')
-    #insert()插入到指定位置
-    	a.insert(1,'ab')
-    #pop()删除末尾元素 
-    	a.pop()
-    #pop(i)删除指定位置元素
-    	a.pop(i)
-    #reverse()反向列表元素
-    	a.reverse()
-    #sort()进行排序
-    	a.sort()
-    #extend()在末尾追加另一个序列的值
-    #clear()清空列表
-    #copy()复制列表
+    append(obj)  # 追加元素到末尾
+    insert(index, obj)  # 插入元素到指定位置
+    pop([index])  # 移除列表中的一个元素（默认最后一个元素），并且返回该元素的值
+    reverse()  # 反向列表元素
+    extend()  # 在末尾追加另一个序列的值
+    clear()  # 清空列表
+    copy()  # 复制列表
+    count(obj)  # 统计某个元素出现的次数
+    index(x[, start[, end]])  # 从列表中找出某个值第一个匹配项的索引位置
+    remove(obj)  # 移除列表中某个值的第一个匹配项
+    sort(key, reverse)  # 进行排序,key:指定可迭代对象中的一个元素来进行排序,reverse:排序规则，reverse = True降序，reverse = False升序（默认）
+    	def takeSecond(elem):  # 按照第二个元素排序
+    		return elem[1]
+        list = [(2, 2), (3, 4), (4, 1), (1, 3)]
+        list.sort(key=takeSecond)
+        print(list) = [(4, 1), (2, 2), (1, 3), (3, 4)]
+    
+    list(seq)  # 将元组或字符串转为列表
+    max(list)  # 求列表最大元素
+    min(list)  # 求列表最小元素
     #list里元素类型可以不同
     #list元素也可以是另一个list
     	s = ['a','b','c',['ab','ac'],'d']
