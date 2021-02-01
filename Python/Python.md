@@ -44,8 +44,8 @@
     	a = b = c =1
         a, b, c = 1, 2, 'str'
               
-    hex(x)  转换为十六进制字符串
-    oct(x)  转换为八进制字符串
+    hex(x)  # 转换为十六进制字符串
+    oct(x)  # 转换为八进制字符串
     
     import keyword
     keyword.kwlist  # python的保留关键字
@@ -239,7 +239,7 @@ random_str = ''.join(random.sample(string.ascii_letters + string.digits, 8))
 | \r           | 回车，将 **\r** 后面的内容移到字符串开头，并逐一替换开头部分的字符，直至将 **\r** 后面的内容完全替换完成。 |
 | \f           | 换页                                                         |
 
-**内建函数**
+**内置函数**
 
 ```python
 count(sub, start, end)  # 统计字符串某个字符出现的次数
@@ -353,16 +353,99 @@ splitlines([keepends])  # 按照行('\r', '\r\n', \n')分隔，返回一个包�
      	#'ab'位置表示为s[3][0]
 ```
 
+### 将列表当做堆栈使用
+
+列表方法使得列表可以很方便的作为一个堆栈来使用，堆栈作为特定的数据结构，最先进入的元素最后一个被释放（**后进先出**）。用 **append()** 方法可以把一个元素添加到堆栈顶。用不指定索引的 **pop()** 方法可以把一个元素从堆栈顶释放出来
+
+**实例**
+
+```python
+stack = [3, 4, 5]
+stack.append(6)
+stack.append(7)
+print(stack) = [3, 4, 5, 6, 7]
+
+stack.pop() = 7
+print(stack) = [3, 4, 5, 6]
+```
+
+### 将列表当作队列使用
+
+把列表当做队列用，只是在队列里第一加入的元素，第一个取出来；但是拿列表用作这样的目的效率不高。在列表的最后添加或者弹出元素速度快，然而在列表里插入或者从头部弹出速度却不快
+
+```python
+from collections import deque
+queue = deque(["Eric", "John", "Michael"])
+queue.append("Terry")           # Terry 入队
+queue.append("Graham")          # Graham 入队
+
+queue.popleft() = 'Eric'        # 第一个元素出队
+queue.popleft() ='John'         # 第二个元素出队
+
+print(queue) = deque(['Michael', 'Terry', 'Graham'])
+```
+
+### 列表推导式
+
+列表推导式提供了从序列创建列表的简单途径
+
+```python
+l1 = [x for x in range(10)]  # 这里不仅可以用for,也可以用if,while等循环或者判断语句
+newlist = [(x, y) for x in a for y in b]
+print(l1) = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+### 嵌套列表解析
+
+**实例**
+
+```python
+ matrix = [
+   		[1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        ]
+# 方法一
+    [[row[i] for row in matrix] for i in range(4)]
+
+# 方法二
+	transposed = []
+    for i in range(4):
+ 	     transposed.append([row[i] for row in matrix]
+                          
+# 方法三
+  	transposed = []
+ 	for i in range(4):
+ 	     transposed_row = []
+  	     for row in matrix:
+ 	        transposed_row.append(row[i])
+ 	     transposed.append(transposed_row)
+```
+
+
+
 ## Tuple (元组)
 
 ```python
-	#初始化后不能修改
+	#初始化后不能修改，是不可变的
 	#定义tuple时元素必须确定下来
     	t=(1,2)
     #空的tuple
     	t=()
     #只有一个元素定义tuple时必须加一个,
     	t=(1,)
+    
+    tup2 = (1, 2, 3, 4, 5, 6, 7 )
+	print(tup2[0]) = 1
+	print(tup2[1:5]) = (2, 3, 4, 5)
+    print(tup2[-1]) = 5
+    # 元组中的元素不允许删除，但能用del删除整个元组
+    
+    # 元组内置函数
+    tuple(iterable)  # 将可迭代元素转换为元组
+    len(tuple)  # 计算元组元素个数
+    max(tuple)  # 返回元组中元素最大值
+    min(tuple)  # 返回元组中元素最小值
 ```
 
 ## Dict (字典)
@@ -374,39 +457,44 @@ splitlines([keepends])  # 按照行('\r', '\r\n', \n')分隔，返回一个包�
     #可以通过key值放入dict中
     	d['Jack']=90
         print(d) = {'Michael': 95, 'Bob': 75, 'Tracy': 85, 'Jack': 90}
-    #多次对一个key放入value，后面的值会把前面的值冲掉
     '''
     检测key是否存在
     	①print('Thomas' in d) = false
     	②print(d.get('Thomas')) = None
     	 print(d.get('Michael')) = 95
     '''
-    #pop()删除一个key
-    	d.pop('Bob')
-        print(d) = {'Michael': 95, 'Tracy': 85, 'Jack': 90}
-    #dict.clear() 清空字典
-    #list可变，不可作为key
+    
+    # 字典键的特性
+    	# 1) 不允许同一个键出现两次，创建时如果同一个键被赋值两次，后一个值被记住
+        # 2) 键必须不可变，所以可以用数字(number)，字符串(str)或元组(tuple)，但是列表(list)不行
+    
+    # 字典内置函数
+    	len(dict)  # 计算字典元素个数，即键的总数
+        str(dict)  # 输出字典，以可打印的字符串表示
+    
+    # 字典内置方法
+    	clear()  # 删除字典内所有元素
+        copy()  # 返回一个字典的浅复制
+        fromkeys(seq[, value])  # 用于创建一个新字典，用seq（键值列表）作字典的键，value作键所对应的初始值
+        get(key, default=None)  # 返回指定键的值,default:指定的键不存在，返回默认值
+        setdefault(key,default=None)  # 若键不存在，则添加键并将值设为默认值
+    	items()  # 以列表返回可遍历的（键,值）元组数组
+        keys()  # 返回一个可迭代对象，使用list()转换为列表
+        values()  # 返回一个迭代器，可以使用list()转换为列表
+        update(dict2)  # 把dict2的键值更新到dict1中
+        pop(key[, default])  # 删除字典给定key所对应的值，返回被删除的值，key必须给出，否则返回default
+        popitem()  # 返回并删除字典中的最后一对键和值
 ```
 
 ## Set (集合)
 
 ```python
-	s=set([1,2,3])  #传入参数
+	# 集合(set)是一个无序的不重复元素序列，set中重复元素会自动过滤
+    # 可以使用大括号{}或者set()函数创建集合，创建一个空集合必须用set() 而不是{}
+    
+    s=set([1,2,3])  #传入参数
     print(s) = {1, 2, 3}
-    #set中重复元素会自动过滤
-    #add(key)添加元素到set
-    	s.add(4)
-    #update(key)参数可以是列表，元组，字典
-    	s.update({5,6})
-        s.update([7,8])
-    #remove(key)移除元素
-    	s.remove(4)
-    #discard(key)也是移除元素，若不存在，不报错
-    	s.discard(9)
-    #pop()随机删除一个元素
-    	s.pop()
-    #frozenset()冻结集合，不能添加删除元素，可以冻结列表、字典、元组等
-    	frozenset(['b', 'r', 'u', 'o', 'n'])
+    
     #两个set可作交集,并集
     	s1 = set([1, 2, 3])
 	 	s2 = set([2, 3, 4])
@@ -414,97 +502,267 @@ splitlines([keepends])  # 按照行('\r', '\r\n', \n')分隔，返回一个包�
 		s1 & s2  = {2, 3}  # 集合s1或s2中包含的所有元素
 		s1 | s2  = {1, 2, 3, 4}  # 集合s1和s2中都包含了的元素
         s1 ^ s2  = {1, 4}  # 不同时包含于s1和s2的元素 
+    
+    # set内置方法
+    	add(x)  # 添加元素到set,
+        update(x)  # 也是添加元素，参数可以是列表、元组、字典
+        remove(x)  # 移除元素，若不存在，则报错
+        discard(x)  # 也是移除元素，若不存在，不报错
+        pop()  # 返回并随机删除集合中的一个元素
+        len(s)  # 计算集合s元素个数
+        clear()  # 清空集合s
+        copy()  # 拷贝一个集合
+        frozenset()  # 冻结集合，不能添加删除元素，可以冻结列表、字典、元组等
+        
+        difference(set)  # 返回两个集合的差集，即返回的集合元素包含在第一个集合中，但不包含在第二个集合中
+        difference_update(set)  # 用于移除两个集合中都存在的元素，无返回值
+        
+        intersection(set1[,set2,……etc])  # 返回两个或更多集合中都包含的元素，即交集
+        intersection_update(set1[,set2,……etc])  # 获取两个或更多集合中都包含的元素，无返回值
+        
+        isdisjoint(set)  # 用于判断是否包含相同元素，没有返回True,否则False
+        issubset(set)  # 判断集合中的所有元素是否都包含在指定集合中，是则True,否则False
+        issuperset(set)  # 判断指定集合的所有元素是否都包含在原始集合中，是则True,否则False
+        
+        symmetric_difference(set)  # 返回两个集合中不重复的元素集合,即会移除两个集合中都存在的元素
+        symmetric_difference_update(set)  # 除当前集合中在另外一个指定集合相同的元素，并将另外一个指定集合中不同的元素插入到当前集合中
+        
+    	union()  # 方法返回两个集合的并集，即包含了所有集合的元素，重复的元素只会出现一次
 ```
 
-## 条件判断
+## 条件控制
 
 ```python
-	'''
-	if <条件判断1>:
-    	<执行1>
-	elif <条件判断2>:
-    	<执行2>
-	elif <条件判断3>:
-   	 	<执行3>
-	else:
-    	<执行4>
-    '''
+if <条件判断1>:
+    <执行1>
+elif <条件判断2>:
+    <执行2>
+elif <条件判断3>:
+   	<执行3>
+else:
+    <执行4>
+
+# if语句用于表达式
+str1 = "More" if a > b else "Less"
 ```
 
 ## 循环语句
 
+### while循环
+
 ```python
-	range(起始位置,最终位置,步长) #生成一个整数序列
-    print(list(range(5))) = [0, 1, 2, 3, 4]
-	#for循环
-    	sum=0
-    	for x in range(10):
-        	sum+=x
-        print(sum) = 45
-    #while循环
-		L = ['Bart', 'Lisa', 'Adam']
-		n = 0
-		while n < 3:
-    		print('hello', L[n])
-    		n +=1
-        #hello Bart
-		#hello Lisa
-		#hello Adam
-    #while循环使用 else 语句
-    	while var1 :
-            ......
-        else :
-            ......
-    #break语句
-    	#提前结束循环
-        n = 1
-		while n <= 100:
-    		if n > 10: # 当n = 11时，条件满足，执行break语句
-        		break # break语句会结束当前循环
-    		print(n)
-   			n = n + 1
-    #continue
-    	#跳过这次循环，进入下一次循环
-        n = 0
-		while n < 10:
-   	 		n = n + 1
-    		if n % 2 == 0: # 如果n是偶数，执行continue语句
-        		continue # continue语句会直接继续下一轮循环，后续的print()语句不会执行
-    		print(n)
+L = ['Bart', 'Lisa', 'Adam']
+n = 0
+while n < 3:
+    print('hello', L[n])
+    n += 1
+#hello Bart
+#hello Lisa
+#hello Adam
+
+# while循环使用 else 语句
+count = 0
+while count < 5:
+   print (count, " 小于 5")
+   count = count + 1
+else:
+   print (count, " 大于或等于 5")
 ```
 
-## 可变与不可变对象
+### for循环
 
 ```python
-#list、dict、int是可变对象  
-    s =['c','b','a']
-    s.sort()
-    print(s)  = ['a','b','c']
-#str、tuple、Number(int float bool complex)是不可变对象 
-    a='abc'
-    a.replace('a','A')  = 'Abc'
-    print(a)  = 'abc'
+languages = ["C", "C++", "Perl", "Python"] 
+for x in languages:
+	print (x)
+sum=0
+for x in range(10):
+	sum+=x
+print(sum) = 45
+
+# for循环也可以使用else语句
+list = [1, 2, 3, 4, 5]
+for i in list:
+    print(i)
+else:
+    print('没有循环数据！')
+```
+
+### 遍历技巧
+
+在**字典中遍历**时，关键字和对应的值可以使用 **items()** 方法同时解读出来
+
+```python
+dict = {1 : 'a', 2 : 'b'}
+for k, v in dict.items():
+	print(k, v)
+'''
+1 a
+2 b
+'''
+```
+在**序列中遍历**时，索引位置和对应值可以使用 **enumerate()** 函数同时得到：
+
+```python
+for i, v in enumerate(['tic', 'tac', 'toe']):
+	print(i, v)
+'''
+0 tic
+1 tac
+2 toe
+'''
+```
+
+同时**遍历两个或更多的序列**，可以使用 **zip()** 组合：
+
+```python
+list1 = [1,2,3,4]
+list2 = ['a','b','c','d']
+for each in zip(list1,list2):
+    print(each)
+'''
+(1, 'a')
+(2, 'b')
+(3, 'c')
+(4, 'd')
+'''
+for a,b in zip(list1,list2):
+    print(a,b)
+'''
+1 a
+2 b
+3 c
+4 d    
+'''
+```
+
+**反向遍历**一个序列，首先指定这个序列，然后调用 **reversed()** 函数：
+
+```python
+for i in reversed(range(1, 10, 2)):
+	print(i)
+'''
+9
+7
+5
+3
+1
+'''
+```
+
+要按**顺序遍历**一个序列，使用 **sorted()** 函数返回一个已排序的序列，并不修改原值：
+
+```python
+basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+for f in sorted(set(basket)):
+	print(f)
+'''
+apple
+banana
+orange
+pear
+'''
+```
+
+### range()函数
+
+```python
+range(起始位置,最终位置,步长) #生成一个整数序列
+print(list(range(5))) = [0, 1, 2, 3, 4]
+```
+
+### break和continue语句
+
+```python
+#break
+	#提前结束循环
+    n = 1
+	while n <= 100:
+    	if n > 10: # 当n = 11时，条件满足，执行break语句
+        	break # break语句会结束当前循环
+    	print(n)
+   		n = n + 1
+#continue
+    #跳过这次循环，进入下一次循环
+    n = 0
+	while n < 10:
+   	 	n = n + 1
+    	if n % 2 == 0: # 如果n是偶数，执行continue语句
+        	continue # continue语句会直接继续下一轮循环，后续的print()语句不会执行
+    	print(n)
+```
+
+### pass 语句
+
+pass是**空语句**，是为了保持程序结构的完整性。
+
+pass 不做任何事情，一般用做**占位语句**。
+
+### 断言（assert）
+
+```python
+assert  表达式
+#  接下来的语句：如果为真就执行，反之会抛出AssertionError异常
+```
+
+## 迭代器和生成器
+
+### 迭代器
+
+迭代器有两个基本的方法：**iter()** 和 **next()**。
+
+```python
+# 字符串，列表或元组对象都可用于创建迭代器
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+print (next(it))   # 输出迭代器的下一个元素
+
+# 迭代器对象可以使用常规for语句进行遍历
+for x in it:
+    print (x, end=" ") = 1 2 3 4
+# 使用 next() 函数遍历
+import sys
+while True:
+    try:
+        print(next(it)) 
+    except  StopIteration:
+        sys.exit()
+```
+
+### 生成器
+
+生成器是一个返回迭代器的函数，只能用于迭代操作
+
+在调用生成器运行的过程中，每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。
+
+```python
+def fibonacci(n): # 生成器函数 - 斐波那契
+    a, b, counter = 0, 1, 0
+    while True:
+        if (counter > n): 
+            return
+        yield a
+        a, b = b, a + b
+        counter += 1
+
+f = fibonacci(10) # f 是一个迭代器，由生成器返回生成
+ 
+while True:
+    try:
+        print (next(f), end=" ")
+    except StopIteration:
+        sys.exit()
 ```
 
 ## 函数
 
-### 	调用函数
+### **定义函数**
 
-```python
-#调用函数
-	abs()  #绝对值
-    max()  #最大值
-    #数据类型转化函数
-    	int()
-        float()
-        str()
-        bool()
-    #可以把函数名赋给一个变量
-    	a=abs
-    	print(a(-1)) = 1  
-```
-
-### 定义函数
+- 函数代码块以 **def** 关键词开头，后接函数标识符名称和圆括号 **()**。
+- 任何传入参数和自变量必须放在圆括号中间，圆括号之间可以用于定义参数。
+- 函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
+- 函数内容以冒号 **:** 起始，并且缩进。
+- **return [表达式]** 结束函数，选择性地返回一个值给调用方，不带表达式的 return 相当于返回 None。
 
 ```python
 def my_abs(x):
@@ -516,3 +774,466 @@ def my_abs(x):
 	def nop():
     	pass
 ```
+
+### **可更改(mutable)与不可更改(immutable)对象**
+
+在 python 中，strings, tuples, 和 numbers 是不可更改的对象，而 list,dict 等则是可以修改的对象。
+
+- **不可变类型：**变量赋值 **a=5** 后再赋值 **a=10**，这里实际是新生成一个 int 值对象 10，再让 a 指向它，而 5 被丢弃，不是改变 a 的值，相当于新生成了 a。
+- **可变类型：**变量赋值 **la=[1,2,3,4]** 后再赋值 **la[2]=5** 则是将 list la 的第三个元素值更改，本身la没有动，只是其内部的一部分值被修改了。
+
+python 函数的参数传递：
+
+- **不可变类型：**类似 C++ 的值传递，如整数、字符串、元组。如 fun(a)，传递的只是 a 的值，没有影响 a 对象本身。如果在 fun(a) 内部修改 a 的值，则是新生成一个 a 的对象。
+- **可变类型：**类似 C++ 的引用传递，如 列表，字典。如 fun(la)，则是将 la 真正的传过去，修改后 fun 外部的 la 也会受影响
+
+### 匿名函数(lambda)
+
+所谓匿名，意即不再使用 def 语句这样标准的形式定义一个函数。
+
+- **lambda 只是一个表达式**，函数体比 def 简单很多。
+- lambda的主体是一个表达式，而不是一个代码块。仅仅能在lambda表达式中封装有限的逻辑进去。
+- lambda 函数拥有自己的命名空间，且不能访问自己参数列表之外或全局命名空间里的参数。
+- 虽然lambda函数看起来只能写一行，却不等同于C或C++的内联函数，后者的目的是调用小函数时不占用栈内存从而增加运行效率。
+
+**语法**
+
+```
+lambda [arg1 [,arg2,.....argn]]: expression
+```
+
+**实例**
+
+```python
+sum = lambda arg1, arg2: arg1 + arg2
+
+# 调用sum函数
+print ("相加后的值为 : ", sum( 10, 20 )) = 30
+print ("相加后的值为 : ", sum( 20, 20 )) = 40
+```
+
+### 强制位置参数
+
+Python3.8 新增了一个函数形参语法 **`/`** 用来指明函数形参必须使用指定位置参数，不能使用关键字参数的形式。
+
+在以下的例子中，形参 **a 和 b** 必须使用**指定位置参数**，**c 或 d** 可以是**位置形参或关键字形参**，而 **e 或 f** 要求为**关键字形参**:
+
+```python
+def f(a, b, /, c, d, *, e, f):
+    print(a, b, c, d, e, f)
+    
+# 正确写法 
+f(10, 20, 30, d=40, e=50, f=60)
+# 错误写法
+f(10, b=20, c=30, d=40, e=50, f=60)   # b 不能使用关键字参数的形式
+f(10, 20, 30, 40, 50, f=60)           # e 必须使用关键字参数的形式
+```
+
+## 面向对象
+
+### 面向对象技术简介
+
+- **类(Class):** 用来描述具有相同的属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。
+- **方法：**类中定义的函数。
+- **类变量：**类变量在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。类变量通常不作为实例变量使用。
+- **数据成员：**类变量或者实例变量用于处理类及其实例对象的相关的数据。
+- **方法重写：**如果从父类继承的方法不能满足子类的需求，可以对其进行改写，这个过程叫方法的覆盖（override），也称为方法的重写。
+- **局部变量：**定义在方法中的变量，只作用于当前实例的类。
+- **实例变量：**在类的声明中，属性是用变量来表示的，这种变量就称为实例变量，实例变量就是一个用 self 修饰的变量。
+- **继承：**即一个派生类（derived class）继承基类（base class）的字段和方法。继承也允许把一个派生类的对象作为一个基类对象对待。例如，有这样一个设计：一个Dog类型的对象派生自Animal类，这是模拟"是一个（is-a）"关系（例图，Dog是一个Animal）。
+- **实例化：**创建一个类的实例，类的具体对象。
+- **对象：**通过类定义的数据结构实例。对象包括两个数据成员（类变量和实例变量）和方法。
+
+### 类定义
+
+```python
+class ClassName:
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+### 类对象
+
+类对象支持两种操作：**属性引用和实例化**
+
+类对象创建后，类命名空间中所有的命名都是有效属性名。
+
+**实例**
+
+```python
+class MyClass:
+    i = 12345
+    def f(self):
+        return 'hello world'
+ 
+# 实例化类
+x = MyClass()
+
+# 属性引用
+# 访问类的属性和方法
+print("MyClass 类的属性 i 为：", x.i)
+print("MyClass 类的方法 f 输出为：", x.f())
+```
+
+类有一个名为 **\__init__()** 的特殊方法（**构造方法**），该方法在类**实例化**时会自动调用，可以有参数
+
+```python
+def __init__(self):
+    self.data = []
+```
+
+**实例**
+
+```python
+class Complex:
+    def __init__(self, realpart, imagpart):
+        self.r = realpart
+        self.i = imagpart
+x = Complex(3.0, -4.5)
+print(x.r, x.i)   # 输出结果：3.0 -4.5
+```
+
+**self代表类的实例，而非类**
+
+### 类的方法
+
+类使用`def`关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 **self**, 且**为第一个参数**，**self 代表的是类的实例**。
+
+**实例**
+
+```python
+#类定义
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name, self.age))
+ 
+# 实例化类
+p = people('abc', 10, 30)
+p.speak()
+```
+
+### 继承
+
+派生类的定义如下所示:
+
+```python
+class DerivedClassName(BaseClassName1):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+**实例**
+
+```python
+#类定义
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name,self.age))
+ 
+#单继承示例
+class student(people):
+    grade = ''
+    def __init__(self,n,a,w,g):
+        #调用父类的构造函数
+        people.__init__(self,n,a,w)
+        self.grade = g
+    #覆写父类的方法
+    def speak(self):
+        print("%s 说: 我 %d 岁了，我在读 %d 年级"%(self.name,self.age,self.grade))
+ 
+ 
+ 
+s = student('ken',10,60,3)
+s.speak()
+```
+
+### 多继承
+
+多继承的类定义形如下例:
+
+```python
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+注意圆括号中**父类的顺序**，若是**父类中有相同的方法名**，而在**子类使用时未指定**，python从**左至右搜索** 即方法在子类中未找到时，从左到右**查找父类中是否包含方法**。
+
+**实例**
+
+```python
+#类定义
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name,self.age))
+ 
+#另一个类，多重继承之前的准备
+class speaker():
+    topic = ''
+    name = ''
+    def __init__(self,n,t):
+        self.name = n
+        self.topic = t
+    def speak(self):
+        print("我叫 %s，我是一个演说家，我演讲的主题是 %s"%(self.name,self.topic))
+ 
+#多重继承
+class sample(speaker,student):
+    a =''
+    def __init__(self,n,a,w,g,t):
+        student.__init__(self,n,a,w,g)
+        speaker.__init__(self,n,t)
+ 
+test = sample("Tim",25,80,4,"Python")
+test.speak()   #方法名同，默认调用的是在括号中排前地父类的方法
+```
+
+### 方法重写
+
+```python
+class Parent:        # 定义父类
+   def myMethod(self):
+      print ('调用父类方法')
+ 
+class Child(Parent): # 定义子类
+   def myMethod(self):
+      print ('调用子类方法')
+ 
+c = Child()          # 子类实例
+c.myMethod()         # 子类调用重写方法
+super(Child,c).myMethod()  # 用子类对象调用父类已被覆盖的方法
+
+super(type[, object-or-type]).xxx  # 函数用于调用父类(超类)的一个方法
+```
+
+### 类属性与方法
+
+类的**私有属性**与**私有方法**：两个**下划线（_ _）**开头，声明该属性为私有，不能在类外使用，类内使用**self.__xxx**
+
+**实例**
+
+```python
+class JustCounter:
+    __secretCount = 0  # 私有变量
+    publicCount = 0    # 公开变量
+ 
+    def count(self):
+        self.__secretCount += 1
+        self.publicCount += 1
+        print (self.__secretCount)
+        
+    def __foo(self):          # 私有方法
+        print('这是私有方法')
+ 
+counter = JustCounter()
+counter.count()
+counter.__foo()  # 报错
+print (counter.publicCount)
+print (counter.__secretCount)  # 报错，实例不能访问私有变量
+```
+
+**类的专有方法：**
+
+- **\__init__ :** 构造函数，在生成对象时调用
+- **\__del__ :** 析构函数，释放对象时使用
+- **\__repr__ :** 打印，转换
+- **\__setitem__ :** 按照索引赋值
+- **\__getitem__:** 按照索引获取值
+- **\__len__:** 获得长度
+- **\__cmp__:** 比较运算
+- **\__call__:** 函数调用
+- **\__add__:** 加运算
+- **\__sub__:** 减运算
+- **\__mul__:** 乘运算
+- **\__truediv__:** 除运算
+- **\__mod__:** 求余运算
+- **\__pow__:** 乘方
+
+**运算符重载**
+
+可以对**类的专有方法**进行重载
+
+```python
+class Vector:
+   def __init__(self, a, b):
+      self.a = a
+      self.b = b
+ 
+   def __str__(self):
+      return 'Vector (%d, %d)' % (self.a, self.b)
+   
+   def __add__(self,other):
+      return Vector(self.a + other.a, self.b + other.b)
+ 
+v1 = Vector(2,10)
+v2 = Vector(5,-2)
+print (v1 + v2)
+```
+
+## 命名空间和作用域
+
+### 命名空间
+
+一般有三种命名空间：
+
+- **内置名称（built-in names**）， Python 语言内置的名称，比如函数名 abs、char 和异常名称 BaseException、Exception 等等。
+- **全局名称（global names）**，模块中定义的名称，记录了模块的变量，包括函数、类、其它导入的模块、模块级的变量和常量。
+- **局部名称（local names）**，函数中定义的名称，记录了函数的变量，包括函数的参数和局部定义的变量。（类中定义的也是）
+
+命名空间查找顺序:**局部的命名空间去 -> 全局命名空间 -> 内置命名空间**
+
+**实例**
+
+```python
+# var1 是全局名称
+var1 = 5
+def some_func():
+ 
+    # var2 是局部名称
+    var2 = 6
+    def some_inner_func():
+ 
+        # var3 是内嵌的局部名称
+        var3 = 7
+```
+
+### 作用域
+
+四种作用域：
+
+- **L（Local）**：最内层，包含局部变量，比如一个函数/方法内部。
+- **E（Enclosing）**：包含了非局部(non-local)也非全局(non-global)的变量。比如两个嵌套函数，一个函数（或类） A 里面又包含了一个函数 B ，那么对于 B 中的名称来说 A 中的作用域就为 nonlocal。
+- **G（Global）**：当前脚本的最外层，比如当前模块的全局变量。
+- **B（Built-in）**： 包含了内建的变量/关键字等，最后被搜索。
+
+规则顺序： **L –> E –> G –> B**。
+
+![img](https://www.runoob.com/wp-content/uploads/2014/05/1418490-20180906153626089-1835444372.png)
+
+**实例**
+
+```python
+g_count = 0  # 全局作用域
+def outer():
+    o_count = 1  # 闭包函数外的函数中
+    def inner():
+        i_count = 2  # 局部作用域
+```
+
+#### 全局变量和局部变量
+
+**局部变量**只能在其**被声明的函数内部访问**，而**全局变量**可以在**整个程序范围内访问**。
+
+```python
+total = 0 # 这是一个全局变量
+# 可写函数说明
+def sum( arg1, arg2 ):
+    #返回2个参数的和."
+    total = arg1 + arg2 # total在这里是局部变量.
+    print ("函数内是局部变量 : ", total)
+    return total
+ 
+#调用sum函数
+sum( 10, 20 )
+print ("函数外是全局变量 : ", total)
+```
+
+#### global 和 nonlocal关键字
+
+当**内部作用域想修改外部作用域的变量**时，就要用到**global**和**nonlocal**关键字。
+
+**实例1**
+
+```python
+# 修改全局变量 num
+num = 1
+def fun1():
+    global num  # 需要使用 global 关键字声明
+    print(num) 
+    num = 123
+    print(num)
+fun1()
+print(num)
+
+'''
+1
+123
+123
+'''
+
+a = 10
+def test():
+    global a
+    a = a + 1
+    print(a)
+test()
+
+'''
+11
+'''
+```
+
+**实例2**
+
+```python
+# 修改嵌套作用域（enclosing 作用域，外层非全局作用域）中的变量
+def outer():
+    num = 10
+    def inner():
+        nonlocal num   # nonlocal关键字声明
+        num = 100
+        print(num)
+    inner()
+    print(num)
+outer()
+
+'''
+100
+100
+'''
+```
+
+## File 方法
+
+
+
+## OS 文件/目录方法
