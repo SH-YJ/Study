@@ -698,13 +698,6 @@ pass是**空语句**，是为了保持程序结构的完整性。
 
 pass 不做任何事情，一般用做**占位语句**。
 
-### 断言（assert）
-
-```python
-assert  表达式
-#  接下来的语句：如果为真就执行，反之会抛出AssertionError异常
-```
-
 ## 迭代器和生成器
 
 ### 迭代器
@@ -1234,6 +1227,803 @@ outer()
 
 ## File 方法
 
+### open()
 
+**open()** 方法用于**打开一个文件**，并**返回文件对象**，在对文件进行处理过程都需要使用到这个函数，如果该文件无法被打开，会抛出 **OSError**。
+
+**语法**
+
+```python
+# 常用形式
+open(file, mode='r')
+# 完整形式
+open(file, mode='r', buffering=-1, encoding=None, newfile=None, closefd=True, opener=None)
+'''
+file: 必需，文件路径（相对或者绝对路径）。
+mode: 可选，文件打开模式
+buffering: 设置缓冲
+encoding: 一般使用utf8
+errors: 报错级别
+newline: 区分换行符
+closefd: 传入的file参数类型
+opener: 设置自定义开启器，开启器的返回值必须是一个打开的文件描述符。
+'''
+```
+
+**mode参数**
+
+| 模式    | 描述                                                         |
+| :------ | :----------------------------------------------------------- |
+| **t**   | **文本模式** (默认)。                                        |
+| **x**   | **写模式，新建一个文件**，如果**该文件已存在则会报错**。     |
+| **b**   | **二进制模式**。                                             |
+| **+**   | 打开一个文件进行更新(**可读可写**)。                         |
+| **r**   | 以**只读方式**打开文件。**文件的指针将会放在文件的开头**。这是默认模式。 |
+| **rb**  | 以**二进制格式**打开一个文件用于**只读**。文件指针将会放在文件的**开头**。这是默认模式。一般用于非文本文件如图片等。 |
+| **r+**  | 打开一个文件**用于读写**。文件指针将会放在文件的**开头**。   |
+| **rb+** | 以**二进制格式**打开一个文件用于**读写**。文件指针将会放在文件的开头。一般用于非文本文件如图片等。 |
+| **w**   | 打开一个文件**只用于写入**。如果**该文件已存在则打开文件，并从开头开始编辑**，即原有内容会被删除。如果**该文件不存在，创建新文件。** |
+| **wb**  | 以**二进制格式**打开一个文件**只用于写入**。如果**该文件已存在则打开文件，并从开头开始编辑**，即原有内容会被删除。如果该**文件不存在，创建新文件**。一般用于非文本文件如图片等。 |
+| **w+**  | 打开一个文件**用于读写**。如果**该文件已存在则打开文件，并从开头开始编辑**，即原有内容会被删除。如果**该文件不存在，创建新文件。** |
+| **wb+** | 以**二进制格式**打开一个文件**用于读写**。如果**该文件已存在则打开文件，并从开头开始编辑**，即原有内容会被删除。如果**该文件不存在，创建新文件**。一般用于非文本文件如图片等。 |
+| **a**   | 打开一个文件**用于追加**。如果**该文件已存在，文件指针将会放在文件的结尾**。也就是说，新的内容将会被写入到已有内容之后。如果**该文件不存在，创建新文件进行写入**。 |
+| **ab**  | 以**二进制格式**打开一个文件**用于追加**。如果**该文件已存在，文件指针将会放在文件的结尾**。也就是说，新的内容将会被写入到已有内容之后。如果**该文件不存在，创建新文件进行写入**。 |
+| **a+**  | 打开一个文件**用于读写**。如果**该文件已存在，文件指针将会放在文件的结尾**。文件打开时会是追加模式。如果**该文件不存在，创建新文件用于读写**。 |
+| **ab+** | 以**二进制格式**打开一个文件用于**追加**。如果**该文件已存在，文件指针将会放在文件的结尾**。如果**该文件不存在，创建新文件用于读写**。 |
+
+默认为**文本模式**，如果要以二进制模式打开，加上 `b`。
+
+### file对象
+
+#### close()
+
+**close()** 方法用于**关闭一个已打开的文件**。**关闭后的文件不能再进行读写操作， 否则会触发 *ValueError* 错误**。
+
+**实例**
+
+```python
+file = open('C:/path/1.txt', 'w')
+print(file.name)  # 1.txt
+file.close()  # 关闭文件
+```
+
+#### write()
+
+**write()** 方法用于向文件中**写入指定字符串**，如果文件打开模式带 b，那写入文件内容时，str (参数)要用 encode 方法转为 bytes 形式，否则报错：TypeError: a bytes-like object is required, not 'str'。
+
+**实例**
+
+```python
+file = open('1.txt', 'r', encoding='UTF-8')
+file.write('12345')
+file.close()
+```
+
+#### writelines()
+
+**writelines()** 方法用于向文件中**写入一序列的字符串**
+
+**实例**
+
+```python
+file = open('1.txt', 'r', encoding='UTF-8')
+list = ['12\n', '23asd\n', 'asdzxc']
+file.writelines(list)
+file.close()
+```
+
+#### read()
+
+**read()** 方法用于**从文件读取指定的字节数**，如果**未给定或为负则读取所有**。
+
+**语法**
+
+```python
+read([size])
+# size : 从文件中读取的字节数，默认为 -1，表示读取整个文件
+```
+
+**实例**
+
+```python
+file = open('1.txt', 'r', encoding='UTF-8')
+text = file.read()
+print(text)  # 12312
+```
+
+#### readline()
+
+**readline()** 方法用于**从文件读取整行**，包括 **"\n"** 字符。如果**指定了一个非负数的参数，则返回指定大小的字节数，包括 "\n" 字符**
+
+**语法**
+
+```python
+readline([size])
+# size : 从文件中读取的字节数
+```
+
+**实例**
+
+```python
+file = open("runoob.txt", "r+")
+
+line = file.readline()
+print (line)  # 1:www.runoob.com
+
+line = file.readline(5)
+print (line)  # 2:www
+
+file.close()
+```
+
+#### readlines()
+
+**readlines()** 方法用于**读取所有行**(直到**结束符 EOF**)并**返回列表**，该列表可以由 Python 的 for... in ... 结构进行处理。 如果**碰到结束符 EOF 则返回空字符串**。
+
+**实例**
+
+```python
+file = open("runoob.txt", "r")
+
+for line in file.readlines():
+    line = line.strip()                       #去掉每行头尾空白  
+    print (line)
+    
+file.close()
+'''
+1:www.runoob.com
+2:www.runoob.com
+3:www.runoob.com
+4:www.runoob.com
+5:www.runoob.com
+'''
+```
+
+#### tell()
+
+**tell()** 方法返回**文件的当前位置**，即**文件指针当前位置**。
+
+**实例**
+
+```python
+fo = open("runoob.txt", "r+")
+ 
+line = fo.readline()
+print ("读取的数据为: %s" % (line))
+
+# 获取当前文件位置
+pos = fo.tell()
+print ("当前位置: %d" % (pos))  # 17
+ 
+fo.close()
+```
+
+#### truncate()
+
+**truncate()** 方法用于从**文件的首行首字节开始截断**，截断文件为 **size 个字节**，无 size 表示从当前位置截断；截断之后 V 后面的所有字节被删除，其中 Widnows 系统下的换行代表2个字节大小。
+
+**语法**
+
+```python
+truncate([size])
+# size : 可选，如果存在则文件截断为 size 字节
+```
+
+**实例**
+
+```python
+fo = open("runoob.txt", "r+")
+
+line = fo.readline()
+print ("读取行: %s" % (line))
+
+fo.truncate()
+line = fo.readlines()
+print ("读取行: %s" % (line))
+
+fo.close()
+
+'''
+读取行: 1:www.runoob.com
+
+读取行: ['2:www.runoob.com\n', '3:www.runoob.com\n', '4:www.runoob.com\n', '5:www.runoob.com\n']
+'''
+```
+
+#### flush()
+
+**flush()** 方法是用来**刷新缓冲区**的，即将**缓冲区中的数据立刻写入文件，同时清空缓冲区**，不需要是被动的等待输出缓冲区写入。
+
+**实例**
+
+```python
+file = open('C:/path/1.txt', 'w', encoding='UTF-8')
+file.flush()  # 刷新缓冲区
+file.close()  # 关闭文件
+```
+
+#### seek()
+
+**seek()** 方法用于**移动文件读取指针到指定位置**。操作成功，则**返回新的文件位置**，如果操作失败，则函数** **。
+
+**语法**
+
+```python
+seek(offset[, whence])
+# offset : 开始的偏移量，也就是代表需要移动偏移的字节数，如果是负数表示从倒数第几位开始。
+# whence : 可选，默认值为 0。给 offset 定义一个参数，表示要从哪个位置开始偏移；0 代表从文件开头开始算起，1 代表从当前位置开始算起，2 代表从文件末尾算起。
+```
+
+**实例**
+
+```python
+f = open('workfile', 'rb+')
+f.write(b'0123456789abcdef')
+# 16
+f.seek(5)      # 移动到文件的第六个字节
+# 5
+f.read(1)
+# b'5'
+f.seek(-3, 2)  # 移动到文件倒数第三个字节
+# 13
+f.read(1)
+# b'd'
+```
+
+#### fileno()
+
+**fileno()** 方法**返回一个整型的文件描述符**(file descriptor FD 整型)，可用于底层操作系统的 I/O 操作。
+
+**实例**
+
+```python
+file = open('1.txt', 'w')
+print(file.fileno())  # 3
+file.close()
+```
+
+#### isatty()
+
+**isatty()** 方法**检测文件是否连接到一个终端设备**，如果**是返回 True**，**否则返回 False**。
+
+**实例**
+
+```python
+file = open('1.txt', 'w')
+print(file.isatty())  # False
+file.close()
+```
 
 ## OS 文件/目录方法
+
+### os模块方法
+
+#### getcwd()
+
+**getcwd()**返回**当前的工作目录**。
+
+**实例**
+
+```python
+import os
+
+print(os.getcwd())  # C:/User/Desktop/Python
+```
+
+#### chdir()
+
+**chdir()改变当前工作目录到指定的路径**，允许访问返回 **True** , 否则返回**False**
+
+**实例**
+
+```python
+import os
+
+os.chdir('C:/Desktop')
+print(os.getcwd())  # C:/Desktop
+```
+
+#### listdir()
+
+**listdir() 获取指定文件夹中的所有文件和文件夹组成的列表**，默认为当前路径。
+
+**实例**
+
+```python
+import os
+
+print(os.listdir())  # a list
+print(os.listdir('C:/'))
+```
+
+#### mkdir()
+
+**mkdir()**创建**一个目录/文件夹**。如果目录有多级，则**创建最后一级**，如果最后一级目录的**上级目录有不存在**的，则会抛出一个 **OSError**
+
+**实例**
+
+```python
+import os
+
+os.mkdir('C:/User/Appdata/newdirectory')
+```
+
+#### makedirs()
+
+**makedirs()递归创建文件夹**，如果**子目录创建失败或者已经存在**，会抛出** OSError**
+
+**实例**
+
+```python
+import os
+
+os.makedirs('/newdir1/newdir2/newdir3')
+```
+
+#### remove()
+
+**remove()删除指定路径的文件**
+
+**实例**
+
+```python
+import os
+
+os.remove('C:/User/1.txt')
+```
+
+#### rmdir()
+
+**rmdir()移除一个目录/文件夹**（必须是**空目录**），否则, 抛出**OSError**
+
+**实例**
+
+```python
+import os
+
+os.rmdir('C:/User/Desktop/Emptydir')
+```
+
+#### removedirs()
+
+**removedirs()递归删除文件夹**，必须是**空文件夹**。
+
+**实例**
+
+```python
+import os
+
+os.removedirs('C:/Windows/Media')
+```
+
+#### rename()
+
+**rename(src, dst)**用于**重命名文件或目录**，如果**dst是一个存在的目录/文件**, 将**抛出OSError**。
+
+**renames()**用于**递归重命名目录/文件**，**renames()**类似于**rename()**。
+
+**实例**
+
+```python
+import os
+
+print(os.listdir(os.getcwd()))  # ['old.txt']
+
+os.rename('old.txt', 'new.txt')
+print(os.listdir(os.getcwd()))  # ['new.txt']
+```
+
+#### stat()
+
+**stat()获取文件的相关信息**
+
+**返回值**
+
+```python
+# st_mode: inode 保护模式
+# st_ino: inode 节点号。
+# st_dev: inode 驻留的设备。
+# st_nlink: inode 的链接数。
+# st_uid: 所有者的用户ID。
+# st_gid: 所有者的组ID。
+# st_size: 普通文件以字节为单位的大小；包含等待某些特殊文件的数据。
+# st_atime: 上次访问的时间。
+# st_mtime: 最后一次修改的时间。
+# st_ctime: 由操作系统报告的"ctime"。在某些系统上（如Unix）是最新的元数据更改的时间，在其它系统上（如Windows）是创建时间（详细信息参见平台的文档）。
+```
+
+**实例**
+
+```python
+import os
+
+print(os.stat('1.txt'))
+```
+
+#### system()
+
+**system()执行系统命令**
+
+**实例**
+
+```python
+import os
+
+os.system('cls')
+```
+
+#### popen()
+
+**popen()执行系统命令**
+
+**语法**
+
+```python
+os.popen(command[, mode[, bufsize]])
+# command : 使用的命令。
+
+# mode : 模式权限可以是 'r'(默认) 或 'w'。
+
+# bufsize : 指明了文件需要的缓冲大小：0意味着无缓冲；1意味着行缓冲；其它正值表示使用参数大小的缓冲（大概值，以字节为单位）。负的bufsize意味着使用系统的默认值，一般来说，对于tty设备，它是行缓冲；对于其它文件，它是全缓冲。如果没有改参数，使用系统的默认值。
+```
+
+**实例**
+
+```python
+import os
+
+a = 'mkdir nwdir'
+b = os.popen(a,'r',1)
+
+print(b)  # open file 'mkdir nwdir', mode 'r' at 0x81614d0
+```
+
+
+
+#### getenv()
+
+**getenv()获得系统环境变量**
+
+```python
+import os
+
+print(os.getenv('path'))
+```
+
+#### putenv()
+
+**putenv('环境变量名'，'变量值')设置系统环境变量**
+
+**实例**
+
+```python
+import os
+
+os.putenv('envname', 'python ')
+```
+
+#### unlink()
+
+**unlink()删除文件,如果文件是一个目录则返回一个错误。**
+
+**实例**
+
+```python
+import os
+
+os.unlink('dirname')
+```
+
+#### walk()
+
+**walk()**用于通过在目录树中游走输出在**目录中的文件名**，**向上或者向下**。
+
+**语法**
+
+```python
+walk(top[, topdown=True[, onerror=None[, followlinks=False]]])
+# top : 根目录下的每一个文件夹(包含它自己), 产生3-元组 (dirpath, dirnames, filenames)【文件夹路径, 文件夹名字, 文件名】。
+
+# topdown : 可选，为True或者没有指定, 一个目录的的3-元组将比它的任何子文件夹的3-元组先产生 (目录自上而下)。如果topdown为 False, 一个目录的3-元组将比它的任何子文件夹的3-元组后产生 (目录自下而上)。
+
+# onerror : 可选，是一个函数; 它调用时有一个参数, 一个OSError实例。报告这错误后，继续walk,或者抛出exception终止walk。
+
+# followlinks : 设置为 true，则通过软链接访问目录。
+```
+
+**实例**
+
+```python
+import os
+
+for root, dirs, files in os.walk('C:/')
+	print(root, dirs, files)
+```
+
+#### open()
+
+**open()** 方法用于**打开一个文件**，并且**设置需要的打开选项**，模式参数mode参数是可选的，默认为 0777。
+
+**语法**
+
+```python
+open(file, flags[, mode])
+# flags : 该参数可以是以下选项，多个使用 "|" 隔开：
+	# os.O_RDONLY: 以只读的方式打开
+	# os.O_WRONLY: 以只写的方式打开
+	# os.O_RDWR : 以读写的方式打开
+	# os.O_NONBLOCK: 打开时不阻塞
+	# os.O_APPEND: 以追加的方式打开
+	# os.O_CREAT: 创建并打开一个新文件
+	# os.O_TRUNC: 打开一个文件并截断它的长度为零（必须有写权限）
+	# os.O_EXCL: 如果指定的文件存在，返回错误
+	# os.O_SHLOCK: 自动获取共享锁
+	# os.O_EXLOCK: 自动获取独立锁
+	# os.O_DIRECT: 消除或减少缓存效果
+	# os.O_FSYNC : 同步写入
+	# os.O_NOFOLLOW: 不追踪软链接
+```
+
+**实例**
+
+```python
+import os
+
+# 打开文件
+fd = os.open( "foo.txt", os.O_RDWR|os.O_CREAT )
+
+# 写入字符串
+os.write(fd, str.encode("This is test"))
+
+# 关闭文件
+os.close( fd )
+```
+
+#### read()
+
+**read()**用于从文件描述符 fd 中**读取最多 n 个字节**，返回包含读取字节的字符串，文件描述符 fd对应文件已达到结尾, 返回一个空字符串
+
+**语法**
+
+```python
+read(fd, n)
+# fd : 文件描述符
+# n : 读取的字节
+```
+
+**实例**
+
+```python
+import os
+
+fd = os.open("f1.txt",os.O_RDWR)
+   
+# 读取文本
+ret = os.read(fd, 12)
+print (ret)  # This is a test
+
+# 关闭文件
+os.close(fd)
+```
+
+#### write()
+
+**write()**用于**写入字符串到文件描述符 fd** 中. **返回实际写入的字符串长度**
+
+**语法**
+
+```python
+write(fd, str)
+```
+
+**实例**
+
+```python
+import os
+
+fd = os.open("f1.txt",os.O_RDWR|os.O_CREAT)
+
+# 写入字符串
+str = "This is runoob.com site"
+ret = os.write(fd,bytes(str, 'UTF-8'))
+
+# 输出返回值
+print (ret)  # 23
+
+# 关闭文件
+os.close(fd)
+```
+
+#### close()
+
+**close(fd)**用于**关闭指定的文件描述符 fd**
+
+### os模块的值
+
+```python
+import os
+
+os.name  # 返回当前系统的内核名称 win->nt linux/unix->posix
+
+os.curdir  # 获取当前路径
+
+os.pardir  # 获取上层目录路径
+
+os.sep  # 获取当前系统的路径分割符号 window -> \ linux/unix -> /
+
+os.extsep  # 获取当前系统中文件名和后缀之间的分割符号，所有系统都是.
+
+os.linesep  # 获取当前系统的换行符号 window -> \r\n linux/unix -> \n
+
+os.environ  # 直接获取所有环境变量的信息组成的字典，如果希望更改环境变量，并且可以查询得到
+```
+
+### **os.path模块**
+
+| 方法                            | 说明                                                       |
+| :------------------------------ | :--------------------------------------------------------- |
+| **abspath(path)**               | 返回**绝对路径**                                           |
+| **basename(path)**              | 返回**文件名**                                             |
+| **commonprefix(list)**          | 返回list(多个路径)中，**所有path共有的最长的路径**         |
+| **dirname(path)**               | 返回**文件路径**                                           |
+| **exists(path)**                | **路径存在**则返回**True**,**路径损坏**返回**False**       |
+| **lexists**                     | **路径存在**则返回**True**,**路径损坏**也返回**True**      |
+| **expanduser(path)**            | 把**path中包含的"~"和"~user"**转换成**用户目录**           |
+| **expandvars(path)**            | 根据**环境变量的值**替换**path中包含的"$name"和"${name}"** |
+| **getatime(path)**              | 返回**最近访问时间**（浮点型秒数）                         |
+| **getmtime(path)**              | 返回**最近文件修改时间**                                   |
+| **getctime(path)**              | 返回**文件 path 创建时间**                                 |
+| **getsize(path)**               | 返回**文件大小**，如果文件不存在就返回错误                 |
+| **isabs(path)**                 | 判断**是否为绝对路径**                                     |
+| **isfile(path)**                | 判断**路径是否为文件**                                     |
+| **isdir(path)**                 | 判断**路径是否为目录**                                     |
+| **islink(path)**                | 判断**路径是否为链接**                                     |
+| **ismount(path)**               | 判断**路径是否为挂载点**                                   |
+| **join(path1[, path2[, ...]])** | 把**目录和文件名合成一个路径**                             |
+| **normcase(path)**              | 转换**path的大小写和斜杠**                                 |
+| **normpath(path)**              | 规范**path字符串形式**                                     |
+| **realpath(path)**              | 返回**path的真实路径**                                     |
+| **relpath(path[, start])**      | 从**start开始计算相对路径**                                |
+| **samefile(path1, path2)**      | 判断**目录或文件是否相同**                                 |
+| **sameopenfile(fp1, fp2)**      | 判断**fp1和fp2是否指向同一文件**                           |
+| **samestat(stat1, stat2)**      | 判断**stat1和stat2是否指向同一个文件**                     |
+| **split(path)**                 | 把路径分割成 **dirname** 和 **basename**，返回一个元组     |
+| **splitdrive(path)**            | 一般用在 windows 下，返回**驱动器名**和**路径**组成的元组  |
+| **splitext(path)**              | 分割路径中的**文件名**与**拓展名**                         |
+| **splitunc(path)**              | 把路径分割为**加载点**与**文件**                           |
+| **supports_unicode_filenames**  | 设置**是否支持unicode路径名**                              |
+
+## 异常
+
+### 异常处理
+
+#### try/except
+
+**语法**
+
+```python
+try:
+	执行代码
+except:
+    发生异常时执行的代码
+```
+
+**try 语句**按照如下方式工作；
+
+- 首先，**执行 try 子**句（在关键字 try 和关键字 except 之间的语句）。
+- 如果**没有异常发生，忽略 except 子句**，try 子句执行后结束。
+- 如果在执行 try 子句的过程中**发生了异常**，那么 **try 子句余下的部分将被忽略**。如果异常的类型和 except 之后的名称相符，那么对应的 except 子句将被执行。
+- 如果**一个异常没有与任何的 except 匹配**，那么**这个异常将会传递给上层的 try 中**。
+
+一个 try 语句可能包含多个except子句，一个except子句可以同时处理多个异常。
+
+#### try/except...else
+
+**语法**
+
+```python
+try:
+    执行代码
+except:
+    发生异常时执行的代码
+else:
+    没有异常时执行的代码
+```
+
+#### try-finally 语句
+
+**语法**
+
+```python
+try:
+    执行代码
+except:
+    发生异常时执行的代码
+else:
+    没有异常时执行的代码
+finally:
+    不管有没有异常都会执行的代码
+```
+
+### 抛出异常
+
+使用 `raise` 语句抛出一个指定的异常
+
+raise 唯一的一个参数指定了要被抛出的异常。它必须是一个异常的实例或者是异常的类（也就是 Exception 的子类）
+
+**语法**
+
+```python
+raise [Exception [, args [, traceback]]]
+```
+
+**实例**
+
+```python
+x = int(input())
+if x > 5:
+    raise Exception('x不能大于5!')
+else:
+    print(x)
+```
+
+### 自定义异常
+
+创建一个新的异常类来自定义异常。异常类继承自 Exception 类，可以直接继承，或者间接继承
+
+**实例**
+
+```python
+class MyError(Exception):
+	def __init__(self, value):
+  		self.value = value
+   	def __str__(self):
+       	return repr(self.value)
+
+try:
+   	raise MyError(2*2)
+except MyError as e:
+   	print('My exception occurred, value:', e.value)  # My exception occurred, value: 4
+
+raise MyError('oops!')
+'''
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+__main__.MyError: 'oops!'
+'''
+```
+
+### 预定义的清理行为
+
+一些对象定义了标准的清理行为，无论系统是否成功的使用了它，一旦不需要它了，那么这个标准的清理行为就会执行。
+
+关键词 `with` 语句就可以保证诸如文件之类的对象在使用完之后一定会正确的执行他的清理方法:
+
+```python
+with open("myfile.txt") as f:
+    for line in f:
+        print(line, end="")
+# 代码执行完毕后，即使在处理过程中出问题了，文件 f 总是会关闭
+```
+
+### 断言（assert）
+
+```python
+assert  表达式
+#  接下来的语句：如果为真就执行，反之会抛出AssertionError异常
+
+assert expression
+等价于
+if not expression:
+    raise AssertionError
+    
+x = '2'
+assert type(x) is int
+'''
+Traceback (most recent call last):
+  File "S:/Desktop/py文件/Normal/Study/List.py", line 8, in <module>
+    assert type(x) is int
+AssertionError
+'''
+```
+
