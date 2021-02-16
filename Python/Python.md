@@ -5,14 +5,6 @@
 ```python
 	input()  #输入 默认数据类型为str  int(input())整型输入
 	print()  #输出 默认输出换行 end=''输出不换行
-    #格式化输出
-    	print('%.2f, %d'%(12,34)   # 12.00, 34  类似于c语言的输出
-    	print('abc {} xyz'.format('mn'))  # abc mn xyz
-    	print('abc {0} xyz {1}'.format('mn','tg'))  # abc mn xyz tg
-    	print('abc {name} xyz'.format(name='mn'))  # abc mn xyz
-    	print('{:.2f}'.format(12))  # 12.00
-    	print('{0:.2f}'.format(12))  # 12.00
-    	print('{num:.2f}'.format(num=12))  # 12.00
     
 	#r' '表示内部的字符串默认不转义
     	print(r'\n')  # \n
@@ -214,7 +206,19 @@ random_str = ''.join(random.sample(string.ascii_letters + string.digits, 8))
         # m.n  m是显示的最小总宽度,n是小数点后的位数
         
     #利用format()函数格式化，用传入的参数依次替换字符串内的占位符{0}、{1}
-    	print('Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)) = Hello, 小明, 成绩提升了 17.1%
+    	print('abc {} xyz'.format('mn'))  # abc mn xyz
+    	print('abc {0} xyz {1}'.format('mn','tg'))  # abc mn xyz tg
+    	print('abc {name} xyz'.format(name='mn'))  # abc mn xyz
+    	print('{:.2f}'.format(12))  # 12.00
+    	print('{0:.2f}'.format(12))  # 12.00
+    	print('{num:.2f}'.format(num=12))  # 12.00
+        # ^, <, > 分别是居中、左对齐、右对齐，后面带宽度
+        print('{:^10d}'.format(13))
+        # : 号后面带填充的字符，只能是一个字符，不指定则默认是用空格填充
+        # + 表示在正数前显示 +，负数前显示 -；  （空格）表示在正数前加空格
+        # 使用大括号 {} 来转义大括号
+        # b、d、o、x 分别是二进制、十进制、八进制、十六进制
+        print('{:x},{:#x}'.format(11,11))  # b,0xb
         
     #f-string 字面量格式化字符串python3.6后,f开头，表达式用{}包起来
     	name = 'World!'
@@ -2027,3 +2031,524 @@ AssertionError
 '''
 ```
 
+## 日期与时间
+
+Python 提供了一个 `time` 和 `calendar` 模块可以用于格式化日期和时间。
+
+每个时间戳都以自从 **1970 年 1 月 1 日**午夜（历元）经过了多长时间来表示
+
+### 时间元组
+
+就是**struct_time元组**
+
+| 属性         | 值                                                           |
+| :----------- | :----------------------------------------------------------- |
+| **tm_year**  | 2008                                                         |
+| **tm_mon**   | 1 到 12                                                      |
+| **tm_mday**  | 1 到 31                                                      |
+| **tm_hour**  | 0 到 23                                                      |
+| **tm_min**   | 0 到 59                                                      |
+| **tm_sec**   | 0 到 61 (60或61 是闰秒)                                      |
+| **tm_wday**  | 0到6 (0是周一)                                               |
+| **tm_yday**  | 一年中的第几天，1 到 366                                     |
+| **tm_isdst** | 是否为夏令时，值有：1(夏令时)、0(不是夏令时)、-1(未知)，默认 -1 |
+
+### 日期格式化符号
+
+python中**时间日期格式化符号**：
+
+| 符号   | 说明                                      |
+| :----- | ----------------------------------------- |
+| **%y** | 两位数的年份表示（0~99）                  |
+| **%Y** | 四位数的年份表示（000~9999）              |
+| **%m** | 月份（01~12）                             |
+| **%d** | 月内中的一天（0~31）                      |
+| **%H** | 24小时制小时数（0~23）                    |
+| **%I** | 12小时制小时数（01~12）                   |
+| **%M** | 分钟数（00~59）                           |
+| **%S** | 秒（00~59）                               |
+| **%a** | 本地简化星期名称                          |
+| **%A** | 本地完整星期名称                          |
+| **%b** | 本地简化的月份名称                        |
+| **%B** | 本地完整的月份名称                        |
+| **%c** | 本地相应的日期表示和时间表示              |
+| **%j** | 年内的一天（001~365）                     |
+| **%p** | 本地A.M 或P.M 的等价符                    |
+| **%U** | 一年中的星期数（00~53）星期天为星期的开始 |
+| **%w** | 星期（0~6），星期天为星期的开始           |
+| **%W** | 一年中的星期数（00~53）星期一为星期的开始 |
+| **%x** | 本地相应的日期表示                        |
+| **%X** | 本期相应的时间表示                        |
+| **%Z** | 当前时区的名称                            |
+| **%%** | %号本身                                   |
+
+### 获取某月日历
+
+**实例**
+
+```python
+import calendar
+
+cal = calendar.month(2020, 2)
+print(cal)
+'''
+   February 2021
+Mo Tu We Th Fr Sa Su
+ 1  2  3  4  5  6  7
+ 8  9 10 11 12 13 14
+15 16 17 18 19 20 21
+22 23 24 25 26 27 28
+'''
+```
+
+### Time模块
+
+#### altzone()
+
+返回格林威治西部的**夏令时地区的偏移秒数**。如果该地区在格林威治东部会返回负值（如西欧，包括英国）。对夏令时启用地区才能使用。
+
+**实例**
+
+```python
+import time
+
+print(time.altzone())  # -32400
+```
+
+#### asctime()
+
+**asctime([tupletime])**接受时间元组并返回一个可读的形式为"Tue Dec 11 18:07:14 2008"（2008年12月11日 周二18时07分14秒）的24个字符的字符串。
+
+**实例**
+
+```python
+import time
+
+localtime = time.asctime(time.localtime())
+print(localtime)  # Thu Feb 11 12:26:06 2021
+```
+
+####  ctime()
+
+**ctime([secs])**作用相当于asctime(localtime(secs))，未给参数相当于asctime()
+
+**实例**
+
+```python
+import time
+
+print(time.ctime())  # Thu Feb 11 12:31:05 2021
+```
+
+#### gmtime()
+
+**gmtime([secs])**接收时间戳（1970纪元后经过的浮点秒数）并返回格林威治天文时间下的时间元组t。注：t.tm_isdst始终为0
+
+**实例**
+
+```python
+import time
+
+print(time.gmtime(1455508609.34375))
+# time.struct_time(tm_year=2016, tm_mon=2, tm_mday=15, tm_hour=3, tm_min=56, tm_sec=49, tm_wday=0, tm_yday=46, tm_isdst=0)
+```
+
+#### localtime()
+
+**localtime([secs])**接收时间戳（1970纪元后经过的浮点秒数）并返回当地时间下的时间元组t（t.tm_isdst可取0或1，取决于当地当时是不是夏令时）
+
+**实例**
+
+```python
+import time
+
+localtime = time.localtime(time.time())
+print(localtime)
+# time.struct_time(tm_year=2021, tm_mon=2, tm_mday=11, tm_hour=10, tm_min=9, tm_sec=45, tm_wday=3, tm_yday=42, tm_isdst=0)
+```
+
+#### strftime()
+
+**语法**
+
+```python
+time.strftime(format[, tupletime])  # 接收以时间元组，并返回以可读字符串表示的当地时间，格式由fmt决定。
+strptime(str,fmt='%a %b %d %H:%M:%S %Y')  # 根据fmt的格式把一个时间字符串解析为时间元组。
+```
+
+**实例**
+
+```python
+import time
+
+# 格式化成2021-02-11 10:14:56形式
+print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+
+# 格式化成Thu Feb 11 10:14:56 2021形式
+print (time.strftime("%a %b %d %H:%M:%S %Y", time.localtime()))
+ 
+# 将格式字符串转换为时间戳
+a = "Thu Feb 11 10:14:56 2021"
+print (time.mktime(time.strptime(a,"%a %b %d %H:%M:%S %Y")))
+# 1613009696.0
+```
+
+#### mktime()
+
+**mktime(tupletime)**接受时间元组并返回时间戳（1970纪元后经过的浮点秒数）。
+
+**实例**
+
+```python
+import time
+
+t = (2020, 2, 11, 12, 40, 38, 1, 48, 0)
+secs = time.mktime( t )
+print (secs)  # 1613018438.0
+```
+
+#### sleep()
+
+**sleep(secs)**推迟调用线程的运行，secs指秒数。
+
+实例
+
+```python
+import time
+
+print ("Start : %s" % time.ctime())  # Start : Thu Feb 11 12:44:13 2021
+time.sleep( 5 )
+print ("End : %s" % time.ctime())  # End : Thu Feb 11 12:44:18 2021
+```
+
+#### time()
+
+**time()**返回当前时间的时间戳（1970纪元后经过的浮点秒数）。
+
+**实例**
+
+```python
+import time
+
+print(time.time())  # 1613018886.8422368
+```
+
+#### perf_counter()
+
+**perf_counter()**返回计时器的**精准时间**（系统的运行时间），**包含整个系统的睡眠时间**。
+
+**实例**
+
+```python
+import time
+
+scale = 50
+
+print("执行开始".center(scale // 2, "-"))  # .center() 控制输出的样式，宽度为 25//2，即 22，汉字居中，两侧填充 -
+
+start = time.perf_counter()
+for i in range(scale + 1):
+    a = '*' * i  # i 个长度的 * 符号
+    b = '.' * (scale - i)  # scale-i） 个长度的 . 符号。符号 * 和 . 总长度为50
+    c = (i / scale) * 100  # 显示当前进度，百分之多少
+    dur = time.perf_counter() - start  # 计时，计算进度条走到某一百分比的用时
+    print("\r{:^3.0f}%[{}->{}]{:.2f}s".format(c, a, b, dur), end='')  # \r用来在每次输出完成后，将光标移至行首，这样保证进度条始终在同一行输出，即在一行不断刷新的效果。
+    time.sleep(0.1)  # 在输出下一个百分之几的进度前，停止0.1秒
+print("\n" + "执行结果".center(scale // 2, '-'))
+```
+
+#### process_time()
+
+**process_time()**返回当前进程执行 CPU 的时间总和，**不包含睡眠时间**,**与perf_counter()类似**。
+
+### Datetime模块
+
+#### date类
+
+**datetime.date(year, month, day)**
+
+**静态方法和字段**
+
+```python
+date.max、date.min  # date对象所能表示的最大、最小日期
+date.resolution  # date对象表示日期的最小单位。这里是天
+date.today()  # 返回一个表示当前本地日期的date对象
+
+import datetime
+
+print(datetime.date.min)  # 0001-01-01
+print(datetime.date.max)  # 9999-12-31
+print(datetime.date.resolution)  # 1 day, 0:00:00
+print(datetime.date.today())  # 2021-02-13
+```
+
+**方法和属性**
+
+```python
+import datetime
+
+d1 = date(2021, 2, 15)  # date对象
+
+print(d1.year, d1.month, d1.day)  # 2021 2 15
+d2 = d1.replace(year, month, day)  # 生成一个新的日期对象，用参数指定的年，月，日代替原有对象中的属性。（原有对象仍保持不变）
+
+d1.timetuple()  # 返回日期对应的time.struct_time(时间元组)对象
+
+d1.weekday()  # 返回weekday，如果是星期一，返回0；如果是星期2，返回1，以此类推
+
+d1.isoweekday()  # 返回weekday，如果是星期一，返回1；如果是星期2，返回2，以此类推
+d1.isocalendar()  # 返回格式如(year，month，day)的元组
+d1.isoformat()  # 返回格式如'YYYY-MM-DD’的字符串
+
+d1.strftime(fmt)  # 和time模块strftime()相同
+```
+
+#### time类
+
+**datetime.time(hour[ , minute[ , second[ , microsecond[ , tzinfo] ] ] ] )** 
+
+**静态方法和字符**
+
+```python
+time.min  # time类所能表示的最小时间。time.min = time(0, 0, 0, 0)
+time.max  # time类所能表示的最大时间。time.max = time(23, 59, 59, 999999)；
+time.resolution  # 时间的最小单位，这里是1微秒；
+```
+
+**方法和属性**
+
+```python
+import datetime
+
+t1 = datetime.time(10, 23, 15, 456)  # time对象
+print(t1.hour, t1.minute, t1.second, t1.microsecond)  # 10 23 14 456
+t1.tzinfo  # 时区信息
+
+t2 = t1.replace([hour[, minute[, second[, microsecond[, tzinfo]]]]])  # 创建一个新的时间对象，用参数指定的时、分、秒、微秒代替原有对象中的属性（原有对象仍保持不变）
+
+t1.isoformat()  # 返回型如"HH:MM:SS"格式的字符串表示
+
+t1.strftime(fmt)  # 同time模块中的strftime()
+```
+
+#### datetime类
+
+datetime相当于date和time结合起来。
+**datetime.datetime (year, month, day[ , hour[ , minute[ , second[ , microsecond[ , tzinfo] ] ] ] ] )**
+
+**静态方法和字段**
+
+```python
+from datetime import *
+
+datetime.today()  # 返回一个表示当前本地时间的datetime对象；
+datetime.now([tz])  # 返回一个表示当前本地时间的datetime对象，如果提供了参数tz，则获取tz参数所指时区的本地时间
+
+datetime.utcnow()  # 返回一个当前utc时间的datetime对象；#格林威治时间
+
+datetime.fromtimestamp(timestamp[, tz])  # 根据时间戮创建一个datetime对象，参数tz指定时区信息
+datetime.utcfromtimestamp(timestamp)  # 根据时间戮创建一个datetime对象
+
+datetime.combine(date, time)  # 根据date和time，创建一个datetime对象
+
+datetime.strptime(date_string, format)  # 将格式字符串转换为datetime对象
+```
+
+**方法和属性**
+
+```python
+import datetime
+
+dt = datetime.datetime.now()  # datetime对象
+dt.year, month, day, hour, minute, second, microsecond, tzinfo  # 
+dt.date()  # 获取date对象；
+dt.time()  # 获取time对象；
+dt1 = dt.replace([year[, month[, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]]]]])  # 创建一个新的datetime对象，用参数代替原有对象中的属性（原有对象仍保持不变）
+dt.timetuple()  # 返回日期对应的time.struct_time(时间元组)对象
+dt.utctimetuple()
+dt.toordinal()
+dt.weekday()  
+dt.isocalendar()  # 返回格式如(year，month，day)的元组；
+dt.isoformat([ sep] )
+dt.ctime()  # 返回一个日期时间的C格式字符串，等效于time.ctime(time.mktime(dt.timetuple()))；
+dt.strftime(format)  # 同上strftime()
+```
+
+#### timedelta类
+
+使用timedelta可以很方便的在日期上做天days，小时hour，分钟，秒，毫秒，微妙的时间计算。
+
+```python
+import datetime
+
+dt = datetime.datetime.now()
+
+dt1 = dt + datetime.timedelta(days=-1)  # 昨天
+dt2 = dt + datetime.timedelta(days=0)  # 今天
+dt3 = dt + datetime.timedelta(days=1)  # 明天
+print(dt1, dt2, dt3)
+# 2021-02-14 19:58:10.528188 2021-02-15 19:58:10.528188 2021-02-16 19:58:10.528188
+```
+
+### Calendar模块
+
+#### calendar()
+
+**calendar(year, w=2, l=1, c=6)**返回一个多行字符串格式的**year年年历**，3个月一行，**间隔距离为c**。 每日**宽度间隔为w字符**。每行长度为21* W+18+2* C。**l是每星期行数**。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.calendar(2021))
+'''
+ 2021
+
+      January                   February                   March
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+             1  2  3       1  2  3  4  5  6  7       1  2  3  4  5  6  7
+ 4  5  6  7  8  9 10       8  9 10 11 12 13 14       8  9 10 11 12 13 14
+11 12 13 14 15 16 17      15 16 17 18 19 20 21      15 16 17 18 19 20 21
+18 19 20 21 22 23 24      22 23 24 25 26 27 28      22 23 24 25 26 27 28
+25 26 27 28 29 30 31                                29 30 31
+………………
+'''
+```
+
+#### firstweekday( )
+
+**firstweekday( )**返回**当前每周起始日期的设置**。默认情况下，首次载入caendar模块时返回**0**，即**星期一**
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.firstweekday())  # 0
+```
+
+#### isleap()
+
+**isleap(year)**是**闰年返回 True**，**否则为 false**。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.isleap(2020))  # True
+```
+
+#### leapdays()
+
+**leapdays(y1,y2)**返回在Y1，Y2**两年之间的闰年总数**。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.leapdays(1999, 2021))  # 6
+```
+
+#### month()
+
+**month(year,month,w=2,l=1)**返回一个多行字符串格式的**year年month月日历**，两行标题，一周一行。每日宽度间隔为w字符。每行的长度为7* w+6。l是每星期的行数。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.month(2021,2))
+'''
+   February 2021
+Mo Tu We Th Fr Sa Su
+ 1  2  3  4  5  6  7
+ 8  9 10 11 12 13 14
+15 16 17 18 19 20 21
+22 23 24 25 26 27 28
+'''
+```
+
+#### monthcalendar()
+
+**monthcalendar(year,month)**返回一个**整数的单层嵌套列表**。每个子列表装载**代表一个星期的整数**。Year年month月外的日期都设为0;范围内的日子都由该月第几日表示，从1开始。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.monthcalendar(2021,2))
+# [[1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11, 12, 13, 14], [15, 16, 17, 18, 19, 20, 21], [22, 23, 24, 25, 26, 27, 28]]
+```
+
+#### monthrange()
+
+**monthrange(year,month)**返回**两个整数**。第一个是**该月的星期几**，第二个是**该月有几天**。星期几是从0（星期一）到 6（星期日）
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.monthrange(2021,2))  # (0, 28)
+```
+
+#### prcal()
+
+**prcal(year, w=0, l=0, c=6, m=3)**相当于 **print (calendar.calendar(year, w=0, l=0, c=6, m=3))**。
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.prcal(2021))
+'''
+ 2021
+
+      January                   February                   March
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+             1  2  3       1  2  3  4  5  6  7       1  2  3  4  5  6  7
+ 4  5  6  7  8  9 10       8  9 10 11 12 13 14       8  9 10 11 12 13 14
+11 12 13 14 15 16 17      15 16 17 18 19 20 21      15 16 17 18 19 20 21
+18 19 20 21 22 23 24      22 23 24 25 26 27 28      22 23 24 25 26 27 28
+25 26 27 28 29 30 31                                29 30 31
+………………
+'''
+```
+
+#### prmonth()
+
+**prmonth(theyear, themonth, w=0, l=0)**相当于 **print(calendar.month(theyear, themonth, w=0, l=0))**
+
+**实例**
+
+```python
+import calendar
+
+print(calendar.prmonth(2021,2))
+'''
+   February 2021
+Mo Tu We Th Fr Sa Su
+ 1  2  3  4  5  6  7
+ 8  9 10 11 12 13 14
+15 16 17 18 19 20 21
+22 23 24 25 26 27 28
+'''
+```
+
+#### setfirstweekday()
+
+**setfirstweekday(weekday)**设置每周的起始日期码。0（星期一）到6（星期日）
+
+#### timegm()
+
+**timegm(tupletime)**和time.gmtime相反：接受一个时间元组形式，返回该时刻的时间戳（1970纪元后经过的浮点秒数）。
+
+#### weekday()
+
+**weekday(year,month,day)**返回给定日期的日期码。0（星期一）到6（星期日）。月份为 1（一月） 到 12（12月）。
