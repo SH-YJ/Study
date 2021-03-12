@@ -47,7 +47,8 @@
     # 多个变量赋值
     	a = b = c =1
         a, b, c = 1, 2, 'str'
-              
+    
+    bin(x)  # 转换为二进制字符串
     hex(x)  # 转换为十六进制字符串
     oct(x)  # 转换为八进制字符串
     
@@ -807,7 +808,7 @@ python 函数的参数传递：
 
 **语法**
 
-```
+```python
 lambda [arg1 [,arg2,.....argn]]: expression
 ```
 
